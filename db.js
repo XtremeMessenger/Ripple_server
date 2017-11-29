@@ -106,6 +106,9 @@ UsorsRooms.belongsTo(Usors, {
 Usors.sync()
 exports.Usors = Usors;
 
+UsorsRooms.sync()
+exports.UsorsRooms = UsorsRooms;
+
 Friends.sync()
 exports.Friends = Friends;
 
