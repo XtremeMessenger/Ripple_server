@@ -1,5 +1,5 @@
 //const path = require('path');
-const config = require('./config.json')[env];
+const config = require('./config.json');
 const Sequelize = require('sequelize');
 // your config file will be in your directory
 const db = new Sequelize(config.database, config.username, config.password, {
@@ -35,9 +35,9 @@ const Friends = db.define('friends', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    },
-    usor: Sequelize.STRING,
-    friend: Sequelize.STRING
+    }
+    // usor_id: Sequelize.INTEGER,
+    // friend_id: Sequelize.INTEGER
 })
 
 const Messages = db.define('messages', {
@@ -46,8 +46,8 @@ const Messages = db.define('messages', {
         primaryKey: true,
         autoIncrement: true
     },
-    sender: Sequelize.STRING,
-    reciever: Sequelize.STRING,
+    // sender_id: Sequelize.INTEGER,
+    // reciever_id: Sequelize.INTEGER,
     text: Sequelize.STRING
 })
 
@@ -59,7 +59,15 @@ const Rooms = db.define('rooms', {
     },
     name: Sequelize.STRING,
     password: Sequelize.STRING,
-    participant: Sequelize.STRING
+})
+const UsorsRooms = db.define('usorsrooms', {
+    userroomID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    }
+    // usor_id: Sequelize.INTEGER,
+    // room_id: Sequelize.INTEGER
 })
 
 const Videos = db.define('videos', {
@@ -68,19 +76,10 @@ const Videos = db.define('videos', {
         primaryKey: true,
         autoIncrement: true
     },
-    usor: Sequelize.STRING,
+    // usor_id: Sequelize.INTEGER,
     video: Sequelize.STRING
 })
-//user.belongsTo(group, {foreignKey: 'group_id', targetKey: 'groupId'});
-
-// .belongsTo(, {
-//     foreignKey: '', targetKey: '',
-// })
-
-Usors.belongsTo(Rooms, {
-    foreignKey: 'room_id', targetKey: 'roomID'
-})
-
+// relationships
 Messages.belongsTo(Usors, {
     foreignKey: 'sender_id', targetKey: 'usorID',
     foreignKey: 'receiver_id', targetKey: 'usorID'
@@ -92,6 +91,14 @@ Friends.belongsTo(Usors, {
 })
 
 Videos.belongsTo(Usors, {
+    foreignKey: 'usor_id', targetKey: 'usorID'
+})
+
+UsorsRooms.belongsTo(Rooms, {
+    foreignKey: 'room_id', targetKey: 'roomID'
+})
+
+UsorsRooms.belongsTo(Usors, {
     foreignKey: 'usor_id', targetKey: 'usorID'
 })
 
@@ -110,3 +117,10 @@ exports.Videos = Videos;
 
 Rooms.sync()
 exports.Rooms = Rooms;
+
+
+//user.belongsTo(group, {foreignKey: 'group_id', targetKey: 'groupId'});
+
+// .belongsTo(, {
+//     foreignKey: '', targetKey: '',
+// })
