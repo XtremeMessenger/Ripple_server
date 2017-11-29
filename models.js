@@ -1,5 +1,4 @@
 const db = require('./db.js')
-const mysql = require('mysql')
 
 module.exports = {
 

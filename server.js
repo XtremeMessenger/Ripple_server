@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.resolve(__dirname, '../Ripple_client/public')));
 app.use(cors(corsOptions));
 app.use('/main', router);
+app.get('/*', function (req, res) {
+    console.log(req.body);
+    res.send('wildcard endpoint ==== ')
+})
 
 app.listen(port, function(){
     console.log('listenong to port ', port)
