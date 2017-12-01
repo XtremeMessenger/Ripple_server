@@ -1,20 +1,22 @@
 const usordata = require('./userdata.json');
 const mysql = require('mysql');
-const db = require('./db.js');
+const db = require('../db.js');
 
-db.Usors.destroy({
-  where: {}
+db.usors.destroy({
+  where: {},
+  truncate: true
 });
 
-usordata.map(usor => {
+
+usordata.map(user => {
   db.Usors.create({
-    usorname: usor.usorname,
-    password: usor.password,
-    email: usor.email,
-    first: usor.first,
-    last: usor.last,
-    quote: usor.quote,
-    icon: usor.icon
+    username: user.username,
+    key: user.key,
+    email: user.email,
+    first: user.first,
+    last: user.last,
+    quote: user.quote,
+    icon: user.icon
   })
 });
 
