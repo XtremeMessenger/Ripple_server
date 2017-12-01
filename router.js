@@ -12,7 +12,7 @@ router.route('/signup').post(function (req, res) {
   })
 })
 
-router.route('/login').get(function (req, res) {
+router.route('/login').post(function (req, res) {
   console.log('got login request', req.body);
   models.login.post(req.body, function (err, dataObj) {
     if (err) {
