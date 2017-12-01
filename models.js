@@ -40,16 +40,19 @@ module.exports = {
 
   addUser: {
     post: function (data, callback) {
+      console.log(' requested user', data.requested)
+      console.log(' models data ',data.requestee.username)
       db.Usors.findOne({
         where: {
           username: data.username
         }
-      }).then(user =>{
+      })
+      .then(user =>{
         db.Friends.create({
-          ogUsor: data.requestee,   // your username
-          friend: data.username     //  the friend you want
+          ogUsor: data.requestee.username,   // your username
+          friend: data.requested   //  the friend you want
         })
-        callback(err, 'success');
+        callback(undefined, 'success');
       }).catch(function (err){
         callback(err)
       })
