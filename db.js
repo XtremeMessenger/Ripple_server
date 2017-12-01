@@ -35,9 +35,10 @@ const Friends = db.define('friends', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    }
-    // usor_id: Sequelize.INTEGER,
-    // friend_id: Sequelize.INTEGER
+    },
+    ogUsor: Sequelize.STRING,
+    friend: Sequelize.STRING
+   
 })
 
 const Messages = db.define('messages', {
@@ -80,27 +81,27 @@ const Videos = db.define('videos', {
     video: Sequelize.STRING
 })
 // relationships
-Messages.belongsTo(Usors, {
-    foreignKey: 'sender_id', targetKey: 'usorID',
-    foreignKey: 'receiver_id', targetKey: 'usorID'
-})
+// Messages.belongsTo(Usors, {
+//     foreignKey: 'sender_id', targetKey: 'usorID',
+//     foreignKey: 'receiver_id', targetKey: 'usorID'
+// })
 
-Friends.belongsTo(Usors, {
-    foreignKey: 'adding_usor_id', targetKey: 'usorID',
-    foreignKey: 'added_usor_id', targetKey: 'usorID'
-})
+// Friends.belongsTo(Usors, {
+//     foreignKey: 'adding_usor_id', targetKey: 'usorID',
+//     foreignKey: 'added_usor_id', targetKey: 'usorID'
+// })
 
-Videos.belongsTo(Usors, {
-    foreignKey: 'usor_id', targetKey: 'usorID'
-})
+// Videos.belongsTo(Usors, {
+//     foreignKey: 'usor_id', targetKey: 'usorID'
+// })
 
-UsorsRooms.belongsTo(Rooms, {
-    foreignKey: 'room_id', targetKey: 'roomID'
-})
+// UsorsRooms.belongsTo(Rooms, {
+//     foreignKey: 'room_id', targetKey: 'roomID'
+// })
 
-UsorsRooms.belongsTo(Usors, {
-    foreignKey: 'usor_id', targetKey: 'usorID'
-})
+// UsorsRooms.belongsTo(Usors, {
+//     foreignKey: 'usor_id', targetKey: 'usorID'
+// })
 
 
 Usors.sync()
