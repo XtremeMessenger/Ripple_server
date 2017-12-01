@@ -22,14 +22,15 @@ module.exports = {
   },
 
   login: {
-    get: function (data, callback) {
-      db.Usors.findOne({
-        where: { usorname: data.username }
+    post: function (data, callback) {
+      db.Usors.findAll({
+        where: { firebase_id: data.firebase_id }
       }).then(user => {
         callback(undefined, user);
       }).catch(function (err) {
+        console.log('DB login error ====== ', err);
         callback(err);
-        console.log('DB signup error ====== ', err);
+        
       })
     }
   },
