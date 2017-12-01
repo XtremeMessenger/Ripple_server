@@ -22,7 +22,7 @@ const Usors = db.define('usors', {
         autoIncrement: true
     },
     usorname: Sequelize.STRING,
-    password: Sequelize.STRING,
+    firebase_id: Sequelize.STRING,
     email: Sequelize.STRING,
     first: Sequelize.STRING,
     last: Sequelize.STRING,
