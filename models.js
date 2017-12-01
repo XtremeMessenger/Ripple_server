@@ -37,4 +37,22 @@ module.exports = {
       })
     }
   },
+
+  addUser: {
+    post: function (data, callback) {
+      db.Usors.findOne({
+        where: {
+          usorname: data.username
+        }
+      }).then(user =>{
+        db.Friends.create({
+          ogUsor: data.requestee,   // your username
+          friend: data.username     //  the friend you want
+        })
+        callback(err, 'success');
+      }).catch(function (err){
+        callback(err)
+      })
+    }
+  }
 }
