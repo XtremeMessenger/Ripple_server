@@ -21,8 +21,8 @@ const Usors = db.define('usors', {
         primaryKey: true,
         autoIncrement: true
     },
-    usorname: Sequelize.STRING,
-    password: Sequelize.STRING,
+    username: Sequelize.STRING,
+    key: Sequelize.STRING,
     email: Sequelize.STRING,
     first: Sequelize.STRING,
     last: Sequelize.STRING,

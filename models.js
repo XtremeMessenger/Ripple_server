@@ -5,8 +5,8 @@ module.exports = {
   signup: {
     post: function (data, callback) {
       db.Usors.create({
-        usorname: data.username,
-        password: data.firebase_id,
+        username: data.username,
+        key: data.firebase_id,
         email: data.email,
         first: data.first,
         last: data.last,
@@ -26,7 +26,7 @@ module.exports = {
   login: {
     post: function (data, callback) {
       db.Usors.findAll({
-        where: { password: data.firebase_id }
+        where: { key: data.firebase_id }
       }).then(user => {
         console.log('found user', user)
         callback(undefined, user);
@@ -42,7 +42,7 @@ module.exports = {
     post: function (data, callback) {
       db.Usors.findOne({
         where: {
-          usorname: data.username
+          username: data.username
         }
       }).then(user =>{
         db.Friends.create({
