@@ -13,9 +13,9 @@ router.route('/signup').post(function (req, res) {
 })
 
 router.route('/login').post(function (req, res) {
-  console.log('got login request', req.query);
-  models.login.post(req.query, function (err, dataObj) {
-    if (err || dataObj===null) {
+  console.log('got login request', req.body);
+  models.login.post(req.body, function (err, dataObj) {
+    if (err) {
       console.log('err ========= ', err);
     }
     console.log('dataObj ========= ', dataObj);
