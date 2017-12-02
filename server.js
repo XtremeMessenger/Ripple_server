@@ -13,12 +13,11 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors(corsOptions));
 app.use(express.static(path.resolve(__dirname, '../Ripple_client/public')));
-app.use('/', router);
-app.get('/*', function (req, res) {
-    console.log(req.body);
-    res.send('wildcard endpoint ==== ')
+app.use(cors(corsOptions));
+app.use('/main', router);
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
 })
 
 app.listen(port, function(){
