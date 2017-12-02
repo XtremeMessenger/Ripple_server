@@ -8,7 +8,7 @@ const cors = require('cors');
 //     optionsSuccessStatus: 200
 // }
 corsOptions = { origin: true, optionsSuccessStatus: 200 }
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const app = express();
 
 app.use(bodyParser.json());
