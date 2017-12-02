@@ -3,18 +3,18 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const router = require('./router.js');
 const cors = require('cors');
-const corsOptions = {
-    origin: 'http://jayop.com',
-    optionsSuccessStatus: 200
-}
-
-const port = 3000;
+// const corsOptions = {
+//     origin: 'http://jayop.com',
+//     optionsSuccessStatus: 200
+// }
+corsOptions = { origin: true, optionsSuccessStatus: 200 }
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(path.resolve(__dirname, '../Ripple_client/public')));
 app.use(cors(corsOptions));
+app.use(express.static(path.resolve(__dirname, '../Ripple_client/public')));
 app.use('/', router);
 app.get('/*', function (req, res) {
     console.log(req.body);
