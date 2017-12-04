@@ -59,13 +59,13 @@ module.exports = {
     }
   },
 
-  getgetPrivateChatHistory: {
+  getPrivateChatHistory: {
     post: function(data, callback) {
       let history = {messages: []};
       db.Messages.findAll({
         where: {
-          ogUsor: data.ogUsor,
-          friend: data.friend
+          from: data.from,
+          to: data.to,
         }
       }).then(message => {
         history.messages.push(message);
@@ -92,6 +92,18 @@ module.exports = {
         callback(err);
       })
     }
+
+  },
+
+  privateChatStore: {
+    post: function(data, callback) {
+      db.Messages.create({
+            from: data.from,
+            to: data.to,
+            text: data.text  
+      })
+    }
+
     },
 
   getFriends: {
