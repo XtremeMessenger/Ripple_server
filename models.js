@@ -77,12 +77,32 @@ module.exports = {
     }
   },
 
-  getRoomChatHistory: {
+  getRoomChatHistoryFrom: {
     post: function(data, callback) {
       let history = {messages: []};
       db.Rooms.findAll({
         where: {
-          name: data.roomName
+          from: data.from,
+          to: data.to
+        }
+      }).then(message => {
+        history.messages.push(message);
+        callback(undefined, history);
+      }).catch(function (err) {
+        console.log('DB login error ====== ', err);
+        callback(err);
+      })
+    }
+
+  }, 
+
+  getRoomChatHistoryTo: {
+    post: function(data, callback) {
+      let history = {messages: []};
+      db.Rooms.findAll({
+        where: {
+          from: data.to,
+          to: data.from
         }
       }).then(message => {
         history.messages.push(message);
@@ -101,10 +121,15 @@ module.exports = {
             from: data.from,
             to: data.to,
             text: data.text  
-      })
+      }).then(()=> {
+        callback(undefined, 'success');
+      }).catch(function (err) {
+        console.log('DB login error ====== ', err);
+        callback(err);
+        })
     }
-
-    },
+    
+  },
 
   getFriends: {
     post: function (data, callback) {
