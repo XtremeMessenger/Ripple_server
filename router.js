@@ -55,6 +55,18 @@ router.route('/getRoomChatHistory').post(function (req, res) {
  })
 })
 
+router.route('/privateChatStore').post(function (req, res) {
+  console.log('got friend request', req.body);
+ models.getRoomChatHistory.post(req.body, function(err, dataObj){
+  if (err) {
+    console.log('err ========= ', err);
+  }
+  console.log('addfriend models dataObj ', dataObj);
+  res.send(dataObj);
+ })
+})
+
+
 
 
 module.exports = router
