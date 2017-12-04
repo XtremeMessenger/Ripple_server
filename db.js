@@ -1,10 +1,11 @@
 //const path = require('path');
-const config = require('./config.json');
+const DBinfo = require('./config/DBinfo.json');
 const Sequelize = require('sequelize');
 // your config file will be in your directory
-const db = new Sequelize(config.database, config.username, config.password, {
-   host: 'jayop2.cmu59wji766r.us-west-1.rds.amazonaws.com',
-   port: 3300,
+const env = require('./config/env.js')
+const db = new Sequelize(DBinfo.database, DBinfo.username, DBinfo.password, {
+   host: env.DB_HOST,
+   port: env.DB_PORT,
    logging: console.log,
    maxConcurrentQueries: 100,
    dialect: 'mysql',
