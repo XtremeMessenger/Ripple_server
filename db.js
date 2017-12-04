@@ -47,7 +47,10 @@ const Messages = db.define('messages', {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
+        
     },
+    from: Sequelize.STRING,
+    to: Sequelize.STRING,
     // sender_id: Sequelize.INTEGER,
     // reciever_id: Sequelize.INTEGER,
     text: Sequelize.STRING
