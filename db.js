@@ -62,9 +62,9 @@ const Rooms = db.define('rooms', {
         primaryKey: true,
         autoIncrement: true
     },
-    name: Sequelize.STRING,
+    //name: Sequelize.STRING,
     // password: Sequelize.STRING,
-    resident: Sequelize.String
+    //resident: Sequelize.String
 })
 
 const RoomMessages = db.define('messages', {

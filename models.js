@@ -65,7 +65,7 @@ module.exports = {
       db.Messages.findAll({
         where: {
           from: data.from,
-          to: data.to,
+          to: data.to
         }
       }).then(message => {
         history.messages.push(message);
@@ -133,7 +133,7 @@ module.exports = {
 
   getFriends: {
     post: function (data, callback) {
-      console.log(' show friends for ', data.user.username)
+      //console.log(' show friends for ', data.user.username)
       db.Friends.findAll({
         where: {
           ogUsor: data.user.username
