@@ -29,6 +29,7 @@ router.route('/addFriend').post(function (req, res) {
   if (err) {
     console.log('err ========= ', err);
   }
+  res.send(dataObj)
   console.log('addfriend models dataObj ', dataObj);
  })
 })
@@ -56,5 +57,16 @@ router.route('/getRoomChatHistory').post(function (req, res) {
 })
 
 
+
+router.route('/getFriends').post(function (req, res) {
+  console.log('get friends request', req.body);
+ models.getFriends.post(req.body, function(err, dataObj){
+  if (err) {
+    console.log('err ========= ', err);
+  }
+  res.send(dataObj)
+  console.log('getFriends models dataObj ', dataObj);
+ })
+})
 
 module.exports = router

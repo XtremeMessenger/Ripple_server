@@ -92,5 +92,26 @@ module.exports = {
         callback(err);
       })
     }
+    },
+
+  getFriends: {
+    post: function (data, callback) {
+      console.log(' show friends for ', data.user.username)
+      db.Friends.findAll({
+        where: {
+          ogUsor: data.user.username
+        }
+      }).then(function(friends){
+        var friendsArr = [];
+        friends.forEach(function(friend){
+          console.log('his friends are ', friend.dataValues.friend)  
+          friendsArr.push(friend.dataValues.friend)        
+        })
+        callback(undefined, friendsArr);
+      }).catch(function(err){
+        callback(err)
+      })
+    }
+
   }
 }
