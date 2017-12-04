@@ -59,13 +59,30 @@ module.exports = {
     }
   },
 
-  getFriendHistory: {
+  getgetPrivateChatHistory: {
     post: function(data, callback) {
       let history = {messages: []};
       db.Messages.findAll({
         where: {
           ogUsor: data.ogUsor,
           friend: data.friend
+        }
+      }).then(message => {
+        history.messages.push(message);
+        callback(undefined, history);
+      }).catch(function (err) {
+        console.log('DB login error ====== ', err);
+        callback(err);
+      })
+    }
+  },
+
+  getRoomChatHistory: {
+    post: function(data, callback) {
+      let history = {messages: []};
+      db.Rooms.findAll({
+        where: {
+          name: data.roomName
         }
       }).then(message => {
         history.messages.push(message);
