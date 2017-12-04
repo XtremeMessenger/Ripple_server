@@ -3,13 +3,15 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const router = require('./router.js');
 const cors = require('cors');
+const env = require('./config/env.js')
 const corsOptions = {
     //     header: 'www.jayop.com:3000',
-    origin: 'www.jayop.com',
+    //origin: 'www.jayop.com',
+    origin: env.SERVER_HOST,
     optionsSuccessStatus: 200
 }
 //const corsOptions = { origin: true, optionsSuccessStatus: 200 }
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || env.SERVER_PORT;
 const app = express();
 
 app.use(bodyParser.json());

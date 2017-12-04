@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const SocketIo = require('socket.io');
-
+const env = require('../config/env.js')
 const server = http.createServer();
 const io = SocketIo(server);
 
@@ -15,5 +15,5 @@ io.on('connection', (socket) => {
   })
 });
 
-const port = process.env.PORT || 3500;
+const port = process.env.PORT || env.SOCKET_SERVER_PORT;
 server.listen(port, () => console.log(`socket server listening on port ${port}`));

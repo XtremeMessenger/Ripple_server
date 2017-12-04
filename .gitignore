@@ -7,3 +7,4 @@ node_module
 *.sqlite
 config.js
 config.json
+config/
