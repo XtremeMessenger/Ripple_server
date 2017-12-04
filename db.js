@@ -63,8 +63,24 @@ const Rooms = db.define('rooms', {
         autoIncrement: true
     },
     name: Sequelize.STRING,
-    password: Sequelize.STRING,
+    // password: Sequelize.STRING,
+    resident: Sequelize.String
 })
+
+const RoomMessages = db.define('messages', {
+    messageID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+        
+    },
+    name: Sequelize.STRING,
+    from: Sequelize.STRING,
+    // sender_id: Sequelize.INTEGER,
+    // reciever_id: Sequelize.INTEGER,
+    text: Sequelize.STRING
+})
+
 const UsorsRooms = db.define('usorsrooms', {
     userroomID: {
         type: Sequelize.INTEGER,
@@ -119,6 +135,9 @@ exports.Friends = Friends;
 
 Messages.sync()
 exports.Messages = Messages;
+
+RoomMessages.sync()
+exports.RoomMessages = RoomMessages;
 
 Videos.sync()
 exports.Videos = Videos;
