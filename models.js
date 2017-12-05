@@ -59,23 +59,47 @@ module.exports = {
     }
   },
 
+  // getPrivateChatHistory: {
+  //   post: function(data, callback) {
+  //     let history = {};
+  //     db.Messages.findAll({
+  //       where: {
+  //         from: data.from,
+  //         to: data.to
+  //       }
+  //     }).then(message => {
+  //       history['messages'].push(message);
+  //       callback(undefined, history);
+  //     }).catch(function (err) {
+  //       console.log('DB login error ====== ', err);
+  //       callback(err);
+  //     })
+  //   }
+  // },
+
   getPrivateChatHistory: {
-    post: function(data, callback) {
-      let history = {};
+    post: function (data, callback) {
+
       db.Messages.findAll({
         where: {
           from: data.from,
           to: data.to
+        }, 
+        $or: {
+          from: data.to,
+          to: data.from
         }
-      }).then(message => {
-        history['messages'].push(message);
-        callback(undefined, history);
+      }).then(messages => {
+
+
+        callback(undefined, messages);
       }).catch(function (err) {
-        console.log('DB login error ====== ', err);
+        console.log('DB getPrivateChatHistory error ====== ', err);
         callback(err);
       })
     }
-  },
+
+  }, 
 
   getPrivateChatHistoryFrom: {
     post: function(data, callback) {
@@ -112,7 +136,7 @@ module.exports = {
 
         callback(undefined, messages);
       }).catch(function (err) {
-        console.log('DB login error ====== ', err);
+        console.log('DB getPrivateChatHistory error ====== ', err);
         callback(err);
       })
     }
