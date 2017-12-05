@@ -60,24 +60,24 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
   console.log('getPrivateChatHistory ====', req.body);
   let totalMessages = [];
 
- models.getRoomChatHistoryFrom.post(req.body, (err, dataObj) =>{
+  models.getPrivateChatHistoryFrom.post(req.body, (err, dataObj) =>{
   if (err) {
     console.log('err ========= ', err);
   }
-  for(let i = 0; i < dataObj.history.from.length;i++){
-    console.log('get room chat history, dataobj dataobj dataobj ===',dataobj)
-    totalMessages.push(dataObj.history.from[i])
-  }
+  // for(let i = 0; i < dataObj.history.from.length;i++){
+  //   console.log('get room chat history, dataobj dataobj dataobj ===',dataobj)
+  //   totalMessages.push(dataObj.history.from[i])
+  // }
  })
- models.getRoomChatHistoryTo.post(req.body, (err, dataObj) =>{
+  models.getPrivateChatHistoryTo.post(req.body, (err, dataObj) =>{
   
   if (err) {
     console.log('err ========= ', err);
   }
   console.log('dataObj' ,dataObj)
-    for(let i = 0; i < dataObj.history.to.length;i++){
-      totalMessages.push(dataObj.history.to)
-    }
+    // for(let i = 0; i < dataObj.history.to.length;i++){
+    //   totalMessages.push(dataObj.history.to)
+    // }
   console.log('addfriend models dataObj ', totalMessages);
   
  })
