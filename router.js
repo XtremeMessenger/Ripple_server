@@ -64,22 +64,24 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
   if (err) {
     console.log('err ========= ', err);
   }
-  console.log('dataObj' ,dataObj)
-  // for(let i = 0; i < dataObj.history.from.length;i++){
-  //   console.log('get room chat history, dataobj dataobj dataobj ===',dataobj)
-  //   totalMessages.push(dataObj.history.from[i])
-  // }
+  // console.log('dataObj  0909090909 ' ,dataObj.messages)
+  //console.log('dataObj[0] 09090909090909 ' ,dataObj[0].dataValues)
+  for(let i = 0; i < dataObj.length;i++){
+      //console.log('get room chat history, dataobj dataobj dataobj ===',dataobj)
+    totalMessages.push(dataObj[i].dataValues)
+  }
+  console.log('hey youfuk face you better worl ***** ..l.. ', totalMessages)
  })
   models.getPrivateChatHistoryTo.post(req.body, (err, dataObj) =>{
   
   if (err) {
     console.log('err ========= ', err);
   }
-  console.log('dataObj' ,dataObj)
-    // for(let i = 0; i < dataObj.history.to.length;i++){
-    //   totalMessages.push(dataObj.history.to)
-    // }
-  console.log('addfriend models dataObj ', totalMessages);
+  // console.log('dataObj' ,dataObj)
+    for(let i = 0; i < dataObj.length;i++){
+      totalMessages.push(dataObj[i].dataValues)
+    }
+  console.log('srgfjwrhfwrojhgwojgheojrghrjohgojrhgojhre ', totalMessages);
   
  })
 
