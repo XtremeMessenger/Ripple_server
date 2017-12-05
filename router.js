@@ -56,22 +56,31 @@ router.route('/getRoomChatHistory').post(function (req, res) {
  })
 })
 
-router.route('/getPrivateChatHistory').post(function (req, res) {
-  console.log('getPrivateChatHistory ====', req.body);
+router.route('/getPrivateChatHistoryFrom').post(function (req, res) {
+  console.log('getPrivateChatHistoryFrom ====', req.body);
   let totalMessages = [];
 
   models.getPrivateChatHistoryFrom.post(req.body, (err, dataObj) =>{
   if (err) {
     console.log('err ========= ', err);
   }
-  // console.log('dataObj  0909090909 ' ,dataObj.messages)
-  //console.log('dataObj[0] 09090909090909 ' ,dataObj[0].dataValues)
+  
   for(let i = 0; i < dataObj.length;i++){
-      //console.log('get room chat history, dataobj dataobj dataobj ===',dataobj)
+
     totalMessages.push(dataObj[i].dataValues)
   }
   console.log('hey youfuk face you better worl ***** ..l.. ', totalMessages)
- })
+  res.send({messages: [totalMessages]});
+})
+  
+
+ 
+})
+
+router.route('/getPrivateChatHistoryTo').post(function (req, res) {
+  console.log('getPrivateChatHistoryTo0 ====', req.body);
+  let totalMessages = [];
+
   models.getPrivateChatHistoryTo.post(req.body, (err, dataObj) =>{
   
   if (err) {
@@ -82,10 +91,9 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
       totalMessages.push(dataObj[i].dataValues)
     }
   console.log('srgfjwrhfwrojhgwojgheojrghrjohgojrhgojhre ', totalMessages);
-  
+  res.send({messages: [totalMessages]});
  })
 
- res.send({messages: [totalMessages]});
 })
 
 
