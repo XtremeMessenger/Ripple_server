@@ -1,4 +1,6 @@
 const db = require('./db.js')
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 module.exports = {
 
@@ -81,14 +83,15 @@ module.exports = {
     post: function (data, callback) {
 
       db.Messages.findAll({
-        where: {
+        where: { [Sequelize.Op.or] : [{
           from: data.from,
           to: data.to
         }, 
-        $or: {
+        {
           from: data.to,
           to: data.from
-        }
+        }] },
+        limit: 1000
       }).then(messages => {
 
 

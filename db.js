@@ -1,6 +1,7 @@
 //const path = require('path');
 const DBinfo = require('./config/DBinfo.json');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 // your config file will be in your directory
 const env = require('./config/env.js')
 const db = new Sequelize(DBinfo.database, DBinfo.username, DBinfo.password, {
