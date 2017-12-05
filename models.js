@@ -61,14 +61,14 @@ module.exports = {
 
   getPrivateChatHistory: {
     post: function(data, callback) {
-      let history = {messages: []};
+      let history = {};
       db.Messages.findAll({
         where: {
           from: data.from,
           to: data.to
         }
       }).then(message => {
-        history.messages.push(message);
+        history['messages'].push(message);
         callback(undefined, history);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
@@ -79,15 +79,16 @@ module.exports = {
 
   getPrivateChatHistoryFrom: {
     post: function(data, callback) {
-      let history = {};
+     
       db.Messages.findAll({
         where: {
           from: data.from,
           to: data.to
         }
       }).then(messages => {
-        history['messages'] = messages;
-        callback(undefined, history);
+
+
+        callback(undefined, messages);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
         callback(err);
@@ -100,17 +101,16 @@ module.exports = {
     
     post: function(data, callback) {
       console.log('getRoomChatHistoryTo post invoked' , data )
-      let history = {};
+
       db.Messages.findAll({
         where: {
           from: data.to,
           to: data.from
         }
-      }).then(message => {
-        history['messages'] = messages;
-        console.log('inside getRoomChatHistoryTo, message', message)
-        console.log('inside getRoomChatHistoryTo, history', history)
-        callback(undefined, history);
+      }).then(messages => {
+
+
+        callback(undefined, messages);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
         callback(err);

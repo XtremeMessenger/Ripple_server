@@ -64,6 +64,7 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
   if (err) {
     console.log('err ========= ', err);
   }
+  console.log('dataObj' ,dataObj)
   // for(let i = 0; i < dataObj.history.from.length;i++){
   //   console.log('get room chat history, dataobj dataobj dataobj ===',dataobj)
   //   totalMessages.push(dataObj.history.from[i])
