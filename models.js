@@ -77,10 +77,10 @@ module.exports = {
     }
   },
 
-  getRoomChatHistoryFrom: {
+  getPrivateChatHistoryFrom: {
     post: function(data, callback) {
       let history = {};
-      db.Rooms.findAll({
+      db.Messages.findAll({
         where: {
           from: data.from,
           to: data.to
@@ -96,12 +96,12 @@ module.exports = {
 
   }, 
 
-  getRoomChatHistoryTo: {
+  getPrivateChatHistoryTo: {
     
     post: function(data, callback) {
       console.log('getRoomChatHistoryTo post invoked' , data )
       let history = {};
-      db.Rooms.findAll({
+      db.Messages.findAll({
         where: {
           from: data.to,
           to: data.from
