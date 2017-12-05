@@ -97,7 +97,9 @@ module.exports = {
   }, 
 
   getRoomChatHistoryTo: {
+    
     post: function(data, callback) {
+      console.log('getRoomChatHistoryTo post invoked' , data )
       let history = {};
       db.Rooms.findAll({
         where: {
@@ -106,6 +108,8 @@ module.exports = {
         }
       }).then(message => {
         history['messages'] = messages;
+        console.log('inside getRoomChatHistoryTo, message', message)
+        console.log('inside getRoomChatHistoryTo, history', history)
         callback(undefined, history);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
