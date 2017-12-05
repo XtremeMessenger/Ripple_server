@@ -60,6 +60,24 @@ router.route('/getRoomChatHistory').post(function (req, res) {
  })
 })
 
+
+router.route('/getRooms').post(function (req, res){
+  models.getRooms.post(req.body, function(err, dataObj){
+    if(err) {
+      console.log('err ========= ', err)
+    }
+    res.send(dataObj);
+  })
+})
+
+router.route('/addRoom').post(function (req, res){
+  models.getRooms.post(req.body, function(err, dataObj){
+    if(err) {
+      console.log('err ========= ', err)
+    }
+    res.send(dataObj);
+  })
+})
 // router.route('/getPrivateChatHistoryFrom').post(function (req, res) {
 //   console.log('getPrivateChatHistoryFrom ====', req.body);
 //   let totalMessages = [];

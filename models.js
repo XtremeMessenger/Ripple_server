@@ -1,6 +1,4 @@
 const db = require('./db.js')
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op
 
 module.exports = {
 
@@ -61,48 +59,48 @@ module.exports = {
     }
   },
 
-  // getPrivateChatHistory: {
-  //   post: function(data, callback) {
-  //     let history = {};
-  //     db.Messages.findAll({
-  //       where: {
-  //         from: data.from,
-  //         to: data.to
-  //       }
-  //     }).then(message => {
-  //       history['messages'].push(message);
-  //       callback(undefined, history);
-  //     }).catch(function (err) {
-  //       console.log('DB login error ====== ', err);
-  //       callback(err);
-  //     })
-  //   }
-  // },
-
-  getPrivateChatHistory: {
+  addRoom: {
     post: function (data, callback) {
 
+      db.Rooms.findOne({
+        where: {
+          name: roomname
+        }
+      })
+      .then(room=>{
+        if(room.name === ''){   // ????
+          callback(undefined, 'fail');
+        } else {
+          db.Room.create({
+            name: data.roomname,
+            resident: data.username
+          })
+          callback(undefined, 'success');
+        }
+       
+      }).catch(function (err){
+        callback(err)
+      })
+    }
+  },
+
+  getPrivateChatHistory: {
+    post: function(data, callback) {
+      let history = {};
       db.Messages.findAll({
-        where: { [Sequelize.Op.or] : [{
+        where: {
           from: data.from,
           to: data.to
-        }, 
-        {
-          from: data.to,
-          to: data.from
-        }] },
-        limit: 1000
-      }).then(messages => {
-
-
-        callback(undefined, messages);
+        }
+      }).then(message => {
+        history['messages'].push(message);
+        callback(undefined, history);
       }).catch(function (err) {
-        console.log('DB getPrivateChatHistory error ====== ', err);
+        console.log('DB login error ====== ', err);
         callback(err);
       })
     }
-
-  }, 
+  },
 
   getPrivateChatHistoryFrom: {
     post: function(data, callback) {
@@ -123,7 +121,19 @@ module.exports = {
     }
 
   }, 
-
+  getRooms: {
+    post: function(data, callback) {
+      db.Rooms.findAll({
+        where: {
+          resident: data.username
+        }
+      }).then(userRooms => {
+          callback(undefined, userRooms)
+      }).catch(function (err) {
+        callback(err)
+      })
+    }
+  },
   getPrivateChatHistoryTo: {
     
     post: function(data, callback) {
@@ -139,7 +149,7 @@ module.exports = {
 
         callback(undefined, messages);
       }).catch(function (err) {
-        console.log('DB getPrivateChatHistory error ====== ', err);
+        console.log('DB login error ====== ', err);
         callback(err);
       })
     }
