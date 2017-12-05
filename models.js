@@ -79,14 +79,14 @@ module.exports = {
 
   getRoomChatHistoryFrom: {
     post: function(data, callback) {
-      let history = {messages: []};
+      let history = {};
       db.Rooms.findAll({
         where: {
           from: data.from,
           to: data.to
         }
-      }).then(message => {
-        history.messages.push(message);
+      }).then(messages => {
+        history['messages'] = messages;
         callback(undefined, history);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
@@ -98,14 +98,14 @@ module.exports = {
 
   getRoomChatHistoryTo: {
     post: function(data, callback) {
-      let history = {messages: []};
+      let history = {};
       db.Rooms.findAll({
         where: {
           from: data.to,
           to: data.from
         }
       }).then(message => {
-        history.messages.push(message);
+        history['messages'] = messages;
         callback(undefined, history);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);

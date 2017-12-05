@@ -36,7 +36,7 @@ router.route('/addFriend').post(function (req, res) {
 
 router.route('/privateChatStore').post(function (req, res) {
   console.log('got friend request', req.body);
- models.getPrivateChatHistory.post(req.body, function(err, dataObj){
+ models.privateChatStore.post(req.body, function(err, dataObj){
   if (err) {
     console.log('err ========= ', err);
   }
@@ -64,15 +64,15 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
   if (err) {
     console.log('err ========= ', err);
   }
-  for(let i = 0; i < dataObj.history.messages;i++){
-    totalMessages.push(dataObj.history.messages[i])
+  for(let i = 0; i < dataObj.history.from.length;i++){
+    totalMessages.push(dataObj.history.from[i])
   }
  })
  models.getRoomChatHistoryTo.post(req.body, (err, dataObj) =>{
   if (err) {
     console.log('err ========= ', err);
-    for(let i = 0; i < dataObj.history.messages;i++){
-      totalMessages.push(dataObj.history.messages[i])
+    for(let i = 0; i < dataObj.history.to.length;i++){
+      totalMessages.push(dataObj.history.to)
     }
   }
   console.log('addfriend models dataObj ', totalMessages);
