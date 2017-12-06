@@ -57,17 +57,6 @@ const Messages = db.define('messages', {
     text: Sequelize.STRING
 })
 
-const Rooms = db.define('rooms', {
-    roomID: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    name: Sequelize.STRING,
-    password: Sequelize.STRING,
-    resident: Sequelize.STRING
-})
-
 const RoomMessages = db.define('messages', {
     messageID: {
         type: Sequelize.INTEGER,
@@ -82,14 +71,29 @@ const RoomMessages = db.define('messages', {
     text: Sequelize.STRING
 })
 
-const UsorsRooms = db.define('usorsrooms', {
+const Rooms = db.define('rooms', {
+    roomID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    roomname: Sequelize.STRING,
+    //password: Sequelize.STRING,
+    //resident: Sequelize.STRING
+})
+
+const UserRoomTable = db.define('userroom', {
     userroomID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
-    }
-    // usor_id: Sequelize.INTEGER,
-    // room_id: Sequelize.INTEGER
+    },
+    username: Sequelize.STRING,
+    room_id: Sequelize.INTEGER
+})
+
+UserRoomTable.belongsTo(Rooms, {
+    foreignKey: 'room_id', targetKey: 'roomID'
 })
 
 const Videos = db.define('videos', {
@@ -116,9 +120,7 @@ const Videos = db.define('videos', {
 //     foreignKey: 'usor_id', targetKey: 'usorID'
 // })
 
-// UsorsRooms.belongsTo(Rooms, {
-//     foreignKey: 'room_id', targetKey: 'roomID'
-// })
+
 
 // UsorsRooms.belongsTo(Usors, {
 //     foreignKey: 'usor_id', targetKey: 'usorID'

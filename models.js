@@ -63,20 +63,25 @@ module.exports = {
 
   addRoom: {
     post: function (data, callback) {
-
+      console.log('this is addRoom === ', data)
       db.Rooms.findOne({
         where: {
-          name: roomname
+          roomname: data.roomname
         }
       })
       .then(room=>{
-        if(room.name === ''){   // ????
-          callback(undefined, 'fail');
+        
+
+
+        console.log('room', room)
+        if (data.roomname === room.roomname){   // ????
+          callback(undefined, 'Room Exists');
         } else {
-          db.Room.create({
-            name: data.roomname,
+          db.Rooms.create({
+            roomname: data.roomname,
             resident: data.username
-          })
+          }
+        )
           callback(undefined, 'success');
         }
        
@@ -111,9 +116,10 @@ module.exports = {
 
   getRooms: {
     post: function(data, callback) {
+      // console.log('this is getRoom === ',data)
       db.Rooms.findAll({
         where: {
-          resident: data.username
+          resident: data.resident
         }
       }).then(userRooms => {
           callback(undefined, userRooms)

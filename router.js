@@ -71,7 +71,7 @@ router.route('/getRooms').post(function (req, res){
 })
 
 router.route('/addRoom').post(function (req, res){
-  models.getRooms.post(req.body, function(err, dataObj){
+  models.addRoom.post(req.body, function(err, dataObj){
     if(err) {
       console.log('err ========= ', err)
     }
