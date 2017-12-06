@@ -9,7 +9,7 @@ module.exports = {
       db.Usors.create({
         username: data.username,
         key: data.firebase_id,
-        email: data.email,
+        email: data.eml,
         first: data.first,
         last: data.last,
         quote: data.quote,
@@ -118,11 +118,13 @@ module.exports = {
   getRooms: {
     post: function(data, callback) {
       // console.log('this is getRoom === ',data)
+      console.log('data dot resident ', data.username)
       db.Rooms.findAll({
         where: {
-          resident: data.resident
+          resident: data.username
         }
       }).then(userRooms => {
+        console.log('uuuuuuuuussooooooooor rooms ', userRooms)
           callback(undefined, userRooms)
       }).catch(function (err) {
         callback(err)

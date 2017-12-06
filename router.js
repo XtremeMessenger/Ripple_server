@@ -63,6 +63,7 @@ router.route('/getRoomChatHistory').post(function (req, res) {
 
 router.route('/getRooms').post(function (req, res){
   models.getRooms.post(req.body, function(err, dataObj){
+    console.log('this is req.body ' , req.body)
     if(err) {
       console.log('err ========= ', err)
     }
