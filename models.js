@@ -74,16 +74,17 @@ module.exports = {
 
 
         console.log('room', room)
-        if (data.roomname === room.roomname){   // ????
-          callback(undefined, 'Room Exists');
-        } else {
+        // if (data.roomname === room.roomname){   // ????
+        //   callback(undefined, 'Room Exists');
+        // } else {
+          console.log('checking the value of data.username ', data.resident)
           db.Rooms.create({
             roomname: data.roomname,
-            resident: data.username
+            resident: data.resident
           }
         )
           callback(undefined, 'success');
-        }
+        // }
        
       }).catch(function (err){
         callback(err)

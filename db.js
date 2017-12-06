@@ -78,8 +78,8 @@ const Rooms = db.define('rooms', {
         autoIncrement: true
     },
     roomname: Sequelize.STRING,
-    //password: Sequelize.STRING,
-    //resident: Sequelize.STRING
+    password: Sequelize.STRING,
+    resident: Sequelize.STRING
 })
 
 const UserRoomTable = db.define('userroom', {
@@ -130,8 +130,8 @@ const Videos = db.define('videos', {
 Usors.sync()
 exports.Usors = Usors;
 
-UsorsRooms.sync()
-exports.UsorsRooms = UsorsRooms;
+// UsorsRooms.sync()
+// exports.UsorsRooms = UsorsRooms;
 
 Friends.sync()
 exports.Friends = Friends;
