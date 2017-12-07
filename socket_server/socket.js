@@ -6,6 +6,7 @@ const server = http.createServer();
 const io = SocketIo(server);
 var os = require('os');
 
+// lol yolo
 
 io.on('connection', (socket) => {
   socket.on('message2', body => {
