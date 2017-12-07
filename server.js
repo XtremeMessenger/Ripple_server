@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs')
+const http = require('http');
 const https = require('https');
 const bodyParser = require('body-parser');
 const router = require('./router.js');
@@ -14,8 +15,8 @@ const corsOptions = {
 }
 
 var options = {
-    key: fs.readFileSync(env.SSL_KEY_PATH),
-    cert: fs.readFileSync(env.SSL_CERT_PATH),
+    key: fs.readFileSync("../ssl/privkey.pem"),
+    cert: fs.readFileSync("../ssl/fullchain.pem"),
 };
 
 //const corsOptions = { origin: true, optionsSuccessStatus: 200 }
@@ -39,11 +40,14 @@ app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
 })
 
-// app.listen(port, function () {
-//     console.log('listenong to port ', port)
-// })
-https.createServer(options, app).listen(port, function () {
+const server = https.createServer(options, app)
+app.listen(3000, function () {
+    console.log('listenong to port ', 3000)
+})
+//const server = https.createServer(options, app)
+
+
+server.listen(3100, function () {
     console.log("Express server listening on port " + port);
 });
-
 

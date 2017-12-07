@@ -1,13 +1,13 @@
 const express = require('express');
-const http = require('http');
+const https = require('https');
 const SocketIo = require('socket.io');
 const env = require('../config/env.js')
-const server = http.createServer();
+const server = https.createServer();
 const io = SocketIo(server);
 var os = require('os');
 
 // lol yolo
-
+io.set('origins', 'https://chat.jayop.com:80');
 io.on('connection', (socket) => {
   socket.on('private', body => {
     console.log('this is private channel ', body)
