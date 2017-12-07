@@ -1,13 +1,25 @@
 const express = require('express');
+
 const https = require('https');
+const http = require('http');
 const SocketIo = require('socket.io');
 const env = require('../config/env.js')
-const server = https.createServer();
+
+var app = express();
+app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        res.header("Access-Control-Allow-Headers", "Content-Type");
+        res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+        next();
+    });
+
+const server = http.createServer(app);
 const io = SocketIo(server);
 var os = require('os');
 
 // lol yolo
-io.set('origins', 'https://chat.jayop.com:80');
+io.set('origins', '*:*');
 io.on('connection', (socket) => {
   socket.on('private', body => {
     console.log('this is private channel ', body)
