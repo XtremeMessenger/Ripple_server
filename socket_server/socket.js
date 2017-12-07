@@ -9,10 +9,10 @@ var os = require('os');
 // lol yolo
 
 io.on('connection', (socket) => {
-  socket.on('message2', body => {
-    console.log('this is body =============== ', body)
-    socket.broadcast.emit('message2', {
-      body: body[1],
+  socket.on('private', body => {
+    console.log('this is private channel ', body)
+    socket.broadcast.emit('private', {
+      text: body[1],
       from: body[0]
     })
   })
