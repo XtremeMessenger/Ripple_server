@@ -15,8 +15,8 @@ const corsOptions = {
 }
 
 var options = {
-    key: fs.readFileSync("../ssl/privkey.pem"),
-    cert: fs.readFileSync("../ssl/fullchain.pem"),
+    key: fs.readFileSync(env.SSL_KEY_PATH),
+    cert: fs.readFileSync(env.SSL_CERT_PATH),
 };
 
 //const corsOptions = { origin: true, optionsSuccessStatus: 200 }
