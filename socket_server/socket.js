@@ -1,4 +1,5 @@
 const express = require('express');
+const s3models = require('./s3models.js')
 
 const https = require('https');
 const http = require('http');
@@ -32,7 +33,9 @@ io.on('connection', (socket) => {
 
   uploader.on("saved", function(event){
     console.log(event.file);
-    //do stuff when you get file
+    s3models.sendFile(event.file, function (err, dataObj) {
+
+    })
   })
 
   uploader.on("error", function(event){
