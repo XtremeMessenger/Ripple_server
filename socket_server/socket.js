@@ -27,7 +27,7 @@ var os = require('os');
 io.set('origins', '*:*');
 io.on('connection', (socket) => {
   let uploader = new siofu();
-  uploader.dir = '/path/to/save/uploads';
+  uploader.dir = './files';
   uploader.listen(socket);
 
   uploader.on("saved", function(event){
