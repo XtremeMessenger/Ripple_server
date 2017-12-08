@@ -35,6 +35,10 @@ io.on('connection', (socket) => {
     //do stuff when you get file
   })
 
+  uploader.on("error", function(event){
+    console.log("Error from uploader", event);
+  });
+
   socket.on('private', body => {
     console.log('this is private channel ', body)
     socket.broadcast.emit('private', {
