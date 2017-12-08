@@ -28,14 +28,14 @@ var os = require('os');
 io.set('origins', '*:*');
 io.on('connection', (socket) => {
   let uploader = new siofu();
-  uploader.dir = './files';
+  uploader.dir = './download';
   uploader.listen(socket);
 
   uploader.on("saved", function(event){
     console.log(event.file);
-    s3models.sendFile(event.file, function (err, dataObj) {
+    // s3models.dropFile(event.file, function (err, dataObj) {
 
-    })
+    // })
   })
 
   uploader.on("error", function(event){

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jayop/Ripple_server#readme",
   "dependencies": {
+    "aws-sdk": "^2.166.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
@@ -27,6 +28,7 @@
     "mongoose": "^4.13.6",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.1",
+    "node-uuid": "^1.4.8",
     "path": "^0.12.7",
     "router": "^1.3.2",
     "sequelize": "^4.23.4",
