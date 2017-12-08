@@ -27,8 +27,14 @@ var os = require('os');
 io.set('origins', '*:*');
 io.on('connection', (socket) => {
   let uploader = new siofu();
-  uploader.fir = '/path/to/save/uploads';
+  uploader.dir = '/path/to/save/uploads';
   uploader.listen(socket);
+
+  uploader.on("saved", function(event){
+    console.log(event.file);
+    //do stuff when you get file
+  })
+
   socket.on('private', body => {
     console.log('this is private channel ', body)
     socket.broadcast.emit('private', {
