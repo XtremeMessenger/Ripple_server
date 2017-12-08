@@ -8,3 +8,5 @@ node_module
 config.js
 config.json
 config/
+download/
+files/
