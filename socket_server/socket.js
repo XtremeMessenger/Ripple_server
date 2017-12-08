@@ -1,4 +1,5 @@
 const express = require('express');
+const s3models = require('./s3models.js')
 
 const https = require('https');
 const http = require('http');
@@ -27,12 +28,14 @@ var os = require('os');
 io.set('origins', '*:*');
 io.on('connection', (socket) => {
   let uploader = new siofu();
-  uploader.dir = './files';
+  uploader.dir = './download';
   uploader.listen(socket);
 
   uploader.on("saved", function(event){
     console.log(event.file);
-    //do stuff when you get file
+    // s3models.dropFile(event.file, function (err, dataObj) {
+
+    // })
   })
 
   uploader.on("error", function(event){
