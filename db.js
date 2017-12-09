@@ -32,6 +32,12 @@ const Usors = db.define('usors', {
     icon: Sequelize.STRING
 })
 
+const Uploads = db.define('uploads',{
+    from: Sequelize.STRING,
+    to: Sequelize.STRING,
+    fileName: Sequelize.STRING
+})
+
 const Friends = db.define('friends', {
     friendshipID: {
         type: Sequelize.INTEGER,
@@ -132,6 +138,9 @@ exports.Usors = Usors;
 
 // UsorsRooms.sync()
 // exports.UsorsRooms = UsorsRooms;
+
+Uploads.sync()
+exports.Uploads = Uploads;
 
 Friends.sync()
 exports.Friends = Friends;

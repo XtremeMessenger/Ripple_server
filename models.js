@@ -199,5 +199,20 @@ module.exports = {
       })
     }
 
+  },
+
+  privateSendFile: {
+    post: function (data, callback) {
+      db.Uploads.create({
+        from: data.from,
+        to: data.to,
+        fileName: data.fileName
+      }).then(function(){
+       
+        callback(undefined, 'sucessfully stored file record');
+      }).catch(function(err){
+        callback(err)
+      })
+    }
   }
 }
