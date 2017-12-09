@@ -1,7 +1,8 @@
 const db = require('./db.js')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
-const firebase = require('firebase')
+// const firebase = require('firebase')
+const authentication = require('./middleware/authentication.js')
 
 module.exports = {
 
@@ -33,8 +34,9 @@ module.exports = {
       }).then(user => {
         // console.log('found user[0].dataValues', user[0])
         let userData = user[0];
-        
-        delete userData.dataValues.key;
+        let token = authentication.generateToken(userData.dataValues.username)
+        userData.dataValues.key;
+        userData.dataValues.token = token;
         let userObjToSend = [];
         userObjToSend.push(userData)
         console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
@@ -43,6 +45,28 @@ module.exports = {
         console.log('DB login error ====== ', err);
         callback(err);
         
+      })
+    }
+  },
+
+  auth: {
+    post: function (data, callback) {
+      db.Usors.findAll({
+        where: { key: data.firebase_id }
+      }).then(user => {
+        // console.log('found user[0].dataValues', user[0])
+        let userData = user[0];
+        let token = authentication.generateToken(userData.dataValues.username)
+        userData.dataValues.key;
+        userData.dataValues.token = null;
+        let userObjToSend = [];
+        userObjToSend.push(userData)
+        console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
+        callback(undefined, userObjToSend);
+      }).catch(function (err) {
+        console.log('DB login error ====== ', err);
+        callback(err);
+
       })
     }
   },
