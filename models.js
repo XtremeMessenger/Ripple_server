@@ -1,6 +1,7 @@
 const db = require('./db.js')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+const firebase = require('firebase')
 
 module.exports = {
 
@@ -16,7 +17,7 @@ module.exports = {
         icon: data.icon
       }).then(user => {
         //console.log('new user', user)
-        console.log('data.firebase_id', data.firebase_id)
+        //console.log('data.firebase_id', data.firebase_id)
         callback(undefined,data);
       }).catch(function(err) {
         callback(err);
@@ -30,8 +31,14 @@ module.exports = {
       db.Usors.findAll({
         where: { key: data.firebase_id }
       }).then(user => {
-        console.log('found user', user)
-        callback(undefined, user);
+        // console.log('found user[0].dataValues', user[0])
+        let userData = user[0];
+        
+        delete userData.dataValues.key;
+        let userObjToSend = [];
+        userObjToSend.push(userData)
+        console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
+        callback(undefined, userObjToSend);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
         callback(err);
@@ -42,8 +49,8 @@ module.exports = {
 
   addUser: {
     post: function (data, callback) {
-      console.log(' requested user', data.requested)
-      console.log(' models data ',data.requestee.username)
+      //console.log(' requested user', data.requested)
+      //console.log(' models data ',data.requestee.username)
       db.Usors.findOne({
         where: {
           username: data.username
@@ -63,7 +70,7 @@ module.exports = {
 
   addRoom: {
     post: function (data, callback) {
-      console.log('this is addRoom === ', data)
+      //console.log('this is addRoom === ', data)
       db.Rooms.findOne({
         where: {
           roomname: data.roomname
@@ -159,7 +166,7 @@ module.exports = {
       }).then(function(friends){
         var friendsArr = [];
         friends.forEach(function(friend){
-          console.log('his friends are ', friend.dataValues.friend)  
+          //console.log('his friends are ', friend.dataValues.friend)  
           friendsArr.push(friend.dataValues.friend)        
         })
         callback(undefined, friendsArr);
