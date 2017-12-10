@@ -3,7 +3,7 @@ const fs = require('fs');
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 var s3 = new AWS.S3();
-var bucketName = 'node-sdk-sample-' + uuid.v4();
+var bucketName = 'jayop';
 var keyName = 'hello_world.txt';
 
 module.exports = {

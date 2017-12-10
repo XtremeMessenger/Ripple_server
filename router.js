@@ -101,6 +101,19 @@ router.route('/addRoom').post(function (req, res){
     res.send(dataObj);
   })
 })
+
+router.route('/getFiles').post(function (req, res){
+  models.getFiles.post(req.body, function(err, dataObj){
+    if(err) {
+      console.log('err ========= ', err)
+    }
+    res.send(dataObj);
+  })
+})
+
+//getFiles
+
+
 // router.route('/getPrivateChatHistoryFrom').post(function (req, res) {
 //   console.log('getPrivateChatHistoryFrom ====', req.body);
 //   let totalMessages = [];

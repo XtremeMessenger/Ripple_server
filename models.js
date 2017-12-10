@@ -180,6 +180,21 @@ module.exports = {
     
   },
 
+  privateSendFile: {
+    post: function (data, callback) {
+      db.Uploads.create({
+        from: data.from,
+        to: data.to,
+        fileName: data.fileName
+      }).then(function(){
+       
+        callback(undefined, 'sucessfully stored file record');
+      }).catch(function(err){
+        callback(err)
+      })
+    }
+  },
+
   getFriends: {
     post: function (data, callback) {
       //console.log(' show friends for ', data.user.username)
@@ -201,15 +216,24 @@ module.exports = {
 
   },
 
-  privateSendFile: {
+  getFiles: {
     post: function (data, callback) {
-      db.Uploads.create({
-        from: data.from,
-        to: data.to,
-        fileName: data.fileName
-      }).then(function(){
-       
-        callback(undefined, 'sucessfully stored file record');
+      //console.log('this is data.user ', data.user)
+      db.Uploads.findAll({
+        where: 
+        {
+          to: data.user
+        }
+      }).then(function(uploads){
+        let filesArray = [];
+        console.log(' this is uploads ' , uploads)
+        uploads.forEach(function(upload){
+          filesArray.push(upload)
+        })
+
+        console.log('this is filesArray ', filesArray)
+
+        callback(undefined, filesArray);
       }).catch(function(err){
         callback(err)
       })
