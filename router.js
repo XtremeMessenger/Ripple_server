@@ -82,17 +82,6 @@ router.route('/getRoomChatHistory').post(function (req, res) {
  })
 })
 
-
-router.route('/getRooms').post(function (req, res){
-  models.getRooms.post(req.body, function(err, dataObj){
-    //console.log('this is req.body ' , req.body)
-    if(err) {
-      console.log('err ========= ', err)
-    }
-    res.send(dataObj);
-  })
-})
-
 router.route('/addRoom').post(function (req, res){
   models.addRoom.post(req.body, function(err, dataObj){
     if(err) {
@@ -173,6 +162,15 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
 
 })
 
+router.route('/getRooms').post(function (req, res) {
+  models.getRooms.post(req.body, function (err, dataObj) {
+    //console.log('this is req.body ' , req.body)
+    if (err) {
+      console.log('err ========= ', err)
+    }
+    res.send(dataObj);
+  })
+})
 
 router.route('/getFriends').post(function (req, res) {
   //console.log('get friends request', req.body);

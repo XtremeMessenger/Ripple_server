@@ -71,6 +71,28 @@ module.exports = {
     }
   },
 
+  getRooms: {
+    post: function (data, callback) {
+      // console.log('this is getRoom === ',data)
+      // console.log('data dot resident ', data.user.username)
+      db.Rooms.findAll({
+        // where: {
+        //   resident: data.user.username
+        // }
+      }).then(userRooms => {
+        console.log('uuuuuuuuussooooooooor rooms ', userRooms)
+        let roomArray = [];
+        userRooms.forEach(function (room) {
+          console.log('room.dataValues ===  ', room.dataValues)
+          roomArray.push(room.dataValues)
+        })
+        callback(undefined, roomArray)
+      }).catch(function (err) {
+        callback(err)
+      })
+    }
+  },
+
   addRoom: {
     post: function (data, callback) {
       //console.log('this is addRoom === ', data)
@@ -79,26 +101,30 @@ module.exports = {
           roomname: data.roomname
         }
       })
-      .then(room=>{
-        
-
-
-        console.log('room', room)
-        // if (data.roomname === room.roomname){   // ????
-        //   callback(undefined, 'Room Exists');
-        // } else {
-          console.log('checking the value of data.username ', data.resident)
+      .then(room => {
           db.Rooms.create({
             roomname: data.roomname,
             resident: data.resident
-          }
-        )
-          callback(undefined, 'success');
-        // }
-       
-      }).catch(function (err){
-        callback(err)
-      })
+          }).then(() => {
+            db.Rooms.findAll({
+              where: {
+                // ogUsor: data.requestee.username
+              }
+            }).then(function (rooms) {
+              var roomsArr = [];
+              rooms.forEach(function (room) {
+                console.log('his rooms are ', room.dataValues)
+                roomsArr.push(room.dataValues)
+              })
+              callback(undefined, roomsArr);
+            }).catch(function (err) {
+              callback(err)
+            })
+          })
+        })
+        .catch(function (err) {
+          callback(err)
+        })
     }
   },
 
@@ -124,24 +150,6 @@ module.exports = {
       })
     }
   }, 
-
-  getRooms: {
-    post: function(data, callback) {
-      // console.log('this is getRoom === ',data)
-      console.log('data dot resident ', data.username)
-      db.Rooms.findAll({
-        where: {
-          resident: data.username
-        }
-      }).then(userRooms => {
-        console.log('uuuuuuuuussooooooooor rooms ', userRooms)
-          callback(undefined, userRooms)
-      }).catch(function (err) {
-        callback(err)
-      })
-    }
-  },
-
 
   privateChatStore: {
     post: function(data, callback) {
@@ -182,7 +190,7 @@ module.exports = {
           ogUsor: data.user.username
         }
       }).then(function(friends){
-        var friendsArr = [];
+        let friendsArr = [];
         friends.forEach(function(friend){
           //console.log('his friends are ', friend.dataValues.friend)  
           friendsArr.push(friend.dataValues.friend)        
