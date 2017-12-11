@@ -71,27 +71,6 @@ module.exports = {
     }
   },
 
-  addUser: {
-    post: function (data, callback) {
-      //console.log(' requested user', data.requested)
-      //console.log(' models data ',data.requestee.username)
-      db.Usors.findOne({
-        where: {
-          username: data.username
-        }
-      })
-      .then(user =>{
-        db.Friends.create({
-          ogUsor: data.requestee.username,   // your username
-          friend: data.requested   //  the friend you want
-        })
-        callback(undefined, 'success');
-      }).catch(function (err){
-        callback(err)
-      })
-    }
-  },
-
   addRoom: {
     post: function (data, callback) {
       //console.log('this is addRoom === ', data)
@@ -213,7 +192,42 @@ module.exports = {
         callback(err)
       })
     }
+  },
 
+  addFriend: {
+    post: function (data, callback) {
+      //console.log(' requested user', data.requested)
+      //console.log(' models data ',data.requestee.username)
+      db.Usors.findOne({
+        where: {
+          username: data.username
+        }
+      })
+      .then(user => {
+          db.Friends.create({
+            ogUsor: data.requestee.username,   // your username
+            friend: data.requested   //  the friend you want
+          }).then(() => {
+            db.Friends.findAll({
+              where: {
+                ogUsor: data.requestee.username
+              }
+            }).then(function (friends) {
+              var friendsArr = [];
+              friends.forEach(function (friend) {
+                console.log('his friends are ', friend.dataValues.friend)
+                friendsArr.push(friend.dataValues.friend)
+              })
+              callback(undefined, friendsArr);
+            }).catch(function (err) {
+              callback(err)
+            })
+          })
+        })
+        .catch(function (err) {
+          callback(err)
+        })
+    }
   },
 
   getFiles: {

@@ -40,7 +40,7 @@ router.route('/auth').post(function (req, res) {
 
 router.route('/addFriend').post(function (req, res) {
   //console.log('got friend request', req.body);
- models.addUser.post(req.body, function(err, dataObj){
+  models.addFriend.post(req.body, function(err, dataObj){
   if (err) {
     console.log('err ========= ', err);
   }
