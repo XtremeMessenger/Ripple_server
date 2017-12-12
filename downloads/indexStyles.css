@@ -1,0 +1,39 @@
+html{
+    background-color: black;
+}
+body{
+    background-color:black;
+    border: 5px solid;
+}
+.twittlerScript{
+    color: darkred;
+    font-size: 16px;
+    text-align: center;
+}
+.headerText{
+    color: darkred;
+    text-align: center;
+    font-size: 44px;
+}
+.headerTwittler{
+    color: blue;
+}
+.timestamp{
+    color: yellow;
+    font-size: 14px;
+    background-color: black;
+}
+.messageCSS{
+    font-size: 22px;
+}
+.mainTweet{
+    background-color: ghostwhite;
+}
+.headingDiv{
+   background-color: ghostwhite; 
+}
+.user{
+    background-color: black;
+    color: lightblue;
+    font-size: 22px;
+}

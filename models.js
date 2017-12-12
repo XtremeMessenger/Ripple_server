@@ -266,9 +266,10 @@ module.exports = {
 
   downloadFile: {
     post: function (data, callback) {
+      console.log('this is that data.fileName stuff in download file @ router.js  ',data.fileName)
       var S3 = new AWS.S3();
-      var params = {Bucket: 'jayop', Key: 'XtremeMessenger.png'};
-      var file = require('fs').createWriteStream(`./downloads/XtremeMessenger.png`);
+      var params = {Bucket: 'jayop', Key: data.fileName};
+      var file = require('fs').createWriteStream(`./downloads/${data.fileName}`);
       S3.getObject(params).createReadStream().pipe(file);
 
       callback(undefined, 'success')

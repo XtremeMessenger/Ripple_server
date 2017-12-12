@@ -35,34 +35,24 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.use('/download', function(req, res){
-    res.set("Content-Disposition", "attachment;filename=XtremeMessenger.png");
+app.get('/download/*', function(req, res){
+    // res.set("Content-Disposition", `attachment;filename=${req.body.fileName}`);
     
-    // console.log('endpoint download in server.js reached')
-    // var file = './downloads/index.html';
+    console.log('endpoint download in server.js reached ', req.originalUrl)
+    // var file = `./downloads/${req.body.fileName}`;
+
+    // console.log('this is that file garbage ',file)
+    // console.log(fs.readFileSync(file))
     // res.download(file); // Set disposition and send it.
+    // console.log('yolo op swag 420 server.js /download yo ',file)
+    let file = './downloads/'+req.originalUrl.slice(10, req.originalUrl.length)
+    res.download(file);
 
-    // console.log(req);
-
-   
-        var file = __dirname + '/downloads/XtremeMessenger.png';
-        res.download(file);
-        res.send('')
-
-  
-
-    // res.download(__dirname + '/downloads/index.html', 'index.html', function(err){
-    //     if (err) {
-    //         console.log(err);
-    //     } 
-    //     else {
-    //         console.log("File send without errors!");
-    //         next();
-    //     }
-    // });
    
 });
 app.use('/main', router);
+
+
 app.get('*', (req, res) => {
     res.send('wildcard endpoint ====== ');
 })
