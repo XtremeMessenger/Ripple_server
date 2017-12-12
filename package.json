@@ -23,6 +23,7 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "dynamodb": "^1.0.0",
     "express": "^4.16.2",
     "firebase": "^4.8.0",
     "http": "0.0.0",
