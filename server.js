@@ -35,10 +35,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.use('/main', router);
-app.get('/download', function(req, res){
-
-
+app.use('/download', function(req, res){
     res.set("Content-Disposition", "attachment;filename=XtremeMessenger.png");
     
     // console.log('endpoint download in server.js reached')
@@ -50,6 +47,7 @@ app.get('/download', function(req, res){
    
         var file = __dirname + '/downloads/XtremeMessenger.png';
         res.download(file);
+        res.send('')
 
   
 
@@ -64,8 +62,9 @@ app.get('/download', function(req, res){
     // });
    
 });
+app.use('/main', router);
 app.get('*', (req, res) => {
-    
+    res.send('wildcard endpoint ====== ');
 })
 
 const server = https.createServer(options, app)
