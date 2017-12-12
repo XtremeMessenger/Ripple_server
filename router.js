@@ -183,4 +183,27 @@ router.route('/getFriends').post(function (req, res) {
  })
 })
 
+router.route('/downloadFile').post(function (req, res) {
+  console.log('im here in download file router')
+  models.downloadFile.post(req.body, function(err, dataObj){
+    if(err) {
+      console.log('blat suka')
+    }
+    console.log('no err here in download file router')
+    res.send(dataObj)
+  })
+})
+
+
+
+
 module.exports = router
+
+// var S3 = require('aws-sdk').S3,
+// S3S = require('s3-streams');
+
+// var download = S3S.ReadStream(new S3(), {
+// Bucket: 'my-bucket',
+// Key: 'my-key',
+// // Any other AWS SDK options 
+// });
