@@ -190,7 +190,7 @@ router.route('/downloadFile').post(function (req, res) {
     if(err) {
       console.log('blat suka')
     }
-    console.log('no err here in download file router')
+    console.log('no err here in download file router ', req.body)
     res.send(dataObj)
   })
 })
