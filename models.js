@@ -130,45 +130,6 @@ module.exports = {
     }
   },
 
-  getPrivateChatHistory: {
-    post: function (data, callback) {
-      db.Messages.findAll({
-        where: {
-        [Sequelize.Op.or]: [{
-          from: data.from,
-          to: data.to
-        },
-        {
-          from: data.to,
-          to: data.from
-        }]
-        },
-        limit: 1000
-      }).then(messages => {
-        callback(undefined, messages);
-      }).catch(function (err) {
-        console.log('DB getPrivateChatHistory error ====== ', err);
-        callback(err);
-      })
-    }
-  }, 
-
-  privateChatStore: {
-    post: function(data, callback) {
-      db.Messages.create({
-            from: data.from,
-            to: data.to,
-            text: data.text  
-      }).then(()=> {
-        callback(undefined, 'success');
-      }).catch(function (err) {
-        console.log('DB login error ====== ', err);
-        callback(err);
-        })
-    }
-    
-  },
-
   privateSendFile: {
     post: function (data, callback) {
       db.Uploads.create({

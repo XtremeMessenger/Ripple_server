@@ -1,15 +1,16 @@
-const dynamoDB = require('./dynamoDB');
+// const dynamoDB = require('./dynamoDB');
 
 const AWS = require("aws-sdk");
 AWS.config.loadFromPath('./config/AWSKey.json');
 
-var dynamodb = new AWS.DynamoDB();
+var dynamodb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
+
   privateChatStore: {
     post: function (data, callback) {
-      docClient.put({
-        TableName: Messages,
+      dynamodb.put({
+        TableName: "Messages",
         Item: {
           "from": data.from,
           "to": data.to,
@@ -26,4 +27,28 @@ module.exports = {
       });
     }
   },
+
+  getPrivateChatHistory: {
+    post: function (data, callback) {
+      db.Messages.findAll({
+        where: {
+          [Sequelize.Op.or]: [{
+            from: data.from,
+            to: data.to
+          },
+          {
+            from: data.to,
+            to: data.from
+          }]
+        },
+        limit: 1000
+      }).then(messages => {
+        callback(undefined, messages);
+      }).catch(function (err) {
+        console.log('DB getPrivateChatHistory error ====== ', err);
+        callback(err);
+      })
+    }
+  }, 
+
 }

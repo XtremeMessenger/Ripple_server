@@ -50,17 +50,6 @@ router.route('/addFriend').post(function (req, res) {
  })
 })
 
-router.route('/privateChatStore').post(function (req, res) {
-  //console.log('got friend request', req.body);
- models.privateChatStore.post(req.body, function(err, dataObj){
-  if (err) {
-    console.log('err ========= ', err);
-  }
-  //console.log('addfriend models dataObj ', dataObj);
-  res.send(dataObj);
- })
-})
-
 router.route('/privateSendFile').post(function (req, res) {
   //console.log('got friend request', req.body);
  models.privateSendFile.post(req.body, function(err, dataObj){
@@ -144,11 +133,22 @@ router.route('/getFiles').post(function (req, res){
 
 // })
 
+router.route('/privateChatStore').post(function (req, res) {
+  //console.log('got friend request', req.body);
+  dynamoModels.privateChatStore.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    //console.log('addfriend models dataObj ', dataObj);
+    res.send(dataObj);
+  })
+})
+
 router.route('/getPrivateChatHistory').post(function (req, res) {
   //console.log('getPrivateChatHistory ====', req.body);
   let totalMessages = [];
 
-  models.getPrivateChatHistory.post(req.body, (err, dataObj) => {
+  dynamoModels.getPrivateChatHistory.post(req.body, (err, dataObj) => {
 
     if (err) {
       console.log('err ========= ', err);
