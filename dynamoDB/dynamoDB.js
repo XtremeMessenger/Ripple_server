@@ -10,8 +10,8 @@ dynamodb.createTable({
     { AttributeName: "to", KeyType: "RANGE" }  //Sort key
   ],
   AttributeDefinitions: [
-    { AttributeName: "from", AttributeType: "N" },
-    { AttributeName: "to", AttributeType: "S" }
+    { AttributeName: "from", AttributeType: "S" },
+    { AttributeName: "to", AttributeType: "S" } //S - String, N - Number
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 10,
