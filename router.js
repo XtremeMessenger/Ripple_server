@@ -2,6 +2,7 @@
 // const bluebird = require('bluebird');
 const router = require('express').Router()
 const models = require('./models.js')
+const dynamoModels = require('./dynamoDB/dynamoModels.js')
 
 // mongoose.Promise = bluebird;
 
