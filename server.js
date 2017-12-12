@@ -36,8 +36,36 @@ app.use(function (req, res, next) {
     next();
 });
 app.use('/main', router);
+app.get('/download', function(req, res){
+
+
+    res.set("Content-Disposition", "attachment;filename=XtremeMessenger.png");
+    
+    // console.log('endpoint download in server.js reached')
+    // var file = './downloads/index.html';
+    // res.download(file); // Set disposition and send it.
+
+    // console.log(req);
+
+   
+        var file = __dirname + '/downloads/XtremeMessenger.png';
+        res.download(file);
+
+  
+
+    // res.download(__dirname + '/downloads/index.html', 'index.html', function(err){
+    //     if (err) {
+    //         console.log(err);
+    //     } 
+    //     else {
+    //         console.log("File send without errors!");
+    //         next();
+    //     }
+    // });
+   
+});
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
+    
 })
 
 const server = https.createServer(options, app)

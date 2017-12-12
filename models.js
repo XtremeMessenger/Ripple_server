@@ -3,6 +3,8 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 // const firebase = require('firebase')
 const authentication = require('./middleware/authentication.js')
+var AWS = require('aws-sdk')
+let S3S = require('s3-streams');
 
 module.exports = {
 
@@ -260,5 +262,18 @@ module.exports = {
         callback(err)
       })
     }
-  }
+  } ,
+
+  downloadFile: {
+    post: function (data, callback) {
+      var S3 = new AWS.S3();
+      var params = {Bucket: 'jayop', Key: 'XtremeMessenger.png'};
+      var file = require('fs').createWriteStream(`./downloads/XtremeMessenger.png`);
+      S3.getObject(params).createReadStream().pipe(file);
+
+      callback(undefined, 'success')
+    }
+      
+    }
+  
 }
