@@ -179,6 +179,36 @@ module.exports = {
             ogUsor: data.requestee.username,   // your username
             friend: data.requested   //  the friend you want
           }).then(() => {
+            
+            // check if friend added me already
+            db.DirectRoomTable.findOne({
+              where: {
+                friendname: data.requestee.username,
+                username: data.requested
+              }
+            }).then((result) => {
+              console.log('friend added me results ', result)
+              // if nobody added, create new message table and add table to each other
+              if (result === null) {
+                db.DirectRooms.create({
+                  createdby: data.requestee.username,
+                  friendname: data.requested
+                }).then((createdRoomResult) => {
+                  console.log('created createdRoomResult', createdRoomResult.dataValues)
+                  db.DirectRoomTable.create({
+                    username: data.requestee.username,
+                    friendname: data.requested,
+                    room_id: createdRoomResult.dataValues.roomID
+                  })
+                  db.DirectRoomTable.create({
+                    username: data.requested,
+                    friendname: data.requestee.username,
+                    room_id: createdRoomResult.dataValues.roomID
+                  })
+                })
+              }
+            })
+
             db.Friends.findAll({
               where: {
                 ogUsor: data.requestee.username

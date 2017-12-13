@@ -31,10 +31,18 @@ module.exports = {
   getPrivateChatHistory: {
     post: function (data, callback) {
 
-      dynamodb.get({
+      dynamodb.query({
         TableName: "Messages",
-        ProjectionExpression: "from, to",
-        FilterExpression: `from = ${data.from} and to = ${data.to}`
+        // KeyConditionExpression: `from = ${data.from} and to = ${data.to}`,
+        KeyConditionExpression: "#from = :from and #to = :to",
+        ExpressionAttributeNames: {
+          "#from": "from",
+          "#to": "to"
+        },
+        ExpressionAttributeValues: {
+          ":from": data.from,
+          ":to": data.to
+        }
       }, function (err, data2) {
         if (err) {
           callback(err)
@@ -44,7 +52,7 @@ module.exports = {
           console.log("Added item:", JSON.stringify(data2, null, 2));
         }
       });
-      
+
     }
   }, 
 
