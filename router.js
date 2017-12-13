@@ -3,6 +3,8 @@
 const router = require('express').Router()
 const models = require('./models.js')
 const dynamoModels = require('./dynamoDB/dynamoModels.js')
+const AWS = require('aws-sdk');
+//let S3S = require('s3-streams');
 
 // mongoose.Promise = bluebird;
 
@@ -193,6 +195,11 @@ router.route('/downloadFile').post(function (req, res) {
     console.log('no err here in download file router ', req.body)
     res.send(dataObj)
   })
+  // var S3 = new AWS.S3();
+  // var params = {Bucket: 'jayop', Key: req.body.fileName};
+  // var file = require('fs').createWriteStream(`./downloads/${data.fileName}`);
+  // S3.getObject(params).createReadStream().pipe(file);
+
 })
 
 

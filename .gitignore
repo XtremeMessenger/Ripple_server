@@ -9,4 +9,5 @@ config.js
 config.json
 config/
 download/
+downloads/
 files/

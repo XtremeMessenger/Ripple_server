@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const router = require('./router.js');
 const cors = require('cors');
 const env = require('./config/env.js')
+// var Response = require('express-response');
 const corsOptions = {
     //     header: 'www.jayop.com:3000',
     //origin: 'www.jayop.com',
@@ -35,20 +36,15 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.get('/download/*', function(req, res){
-    // res.set("Content-Disposition", `attachment;filename=${req.body.fileName}`);
-    
+app.get('/download/*', (req, res) => {
     console.log('endpoint download in server.js reached ', req.originalUrl)
-    // var file = `./downloads/${req.body.fileName}`;
-
-    // console.log('this is that file garbage ',file)
-    // console.log(fs.readFileSync(file))
-    // res.download(file); // Set disposition and send it.
-    // console.log('yolo op swag 420 server.js /download yo ',file)
-    let file = './downloads/'+req.originalUrl.slice(10, req.originalUrl.length)
-    res.download(file);
-
-   
+    let fileName = req.originalUrl.slice(10, req.originalUrl.length);
+    console.log(' this is the download file name ',fileName)
+    // let fileLocation=`./downloads/${fileName}`;
+    let fileExtension =`/downloads/${fileName}`;
+    // res.attachment(fileName)
+    // console.log('this is res ', res)
+    res.download(__dirname + fileExtension)
 });
 app.use('/main', router);
 
