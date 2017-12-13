@@ -234,8 +234,30 @@ module.exports = {
       S3.getObject(params).createReadStream().pipe(file);
 
       callback(undefined, 'success')
-    }
-      
-    }
+    }    
+  },
   
+  getPrivateChatHistory: {
+    post: function (data, callback) {
+      db.Messages.findAll({
+        where: {
+          [Sequelize.Op.or]: [{
+            from: data.from,
+            to: data.to
+          },
+          {
+            from: data.to,
+            to: data.from
+          }]
+        },
+        limit: 1000
+      }).then(messages => {
+        callback(undefined, messages);
+      }).catch(function (err) {
+        console.log('DB getPrivateChatHistory error ====== ', err);
+        callback(err);
+      })
+    }
+  }, 
+
 }

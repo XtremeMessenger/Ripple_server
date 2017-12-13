@@ -49,19 +49,19 @@ const Friends = db.define('friends', {
    
 })
 
-// const Messages = db.define('messages', {
-//     messageID: {
-//         type: Sequelize.INTEGER,
-//         primaryKey: true,
-//         autoIncrement: true
+const Messages = db.define('messages', {
+    messageID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
         
-//     },
-//     from: Sequelize.STRING,
-//     to: Sequelize.STRING,
-//     // sender_id: Sequelize.INTEGER,
-//     // reciever_id: Sequelize.INTEGER,
-//     text: Sequelize.STRING
-// })
+    },
+    from: Sequelize.STRING,
+    to: Sequelize.STRING,
+    // sender_id: Sequelize.INTEGER,
+    // reciever_id: Sequelize.INTEGER,
+    text: Sequelize.STRING
+})
 
 const RoomMessages = db.define('messages', {
     messageID: {
@@ -145,8 +145,8 @@ exports.Uploads = Uploads;
 Friends.sync()
 exports.Friends = Friends;
 
-// Messages.sync()
-// exports.Messages = Messages;
+Messages.sync()
+exports.Messages = Messages;
 
 RoomMessages.sync()
 exports.RoomMessages = RoomMessages;

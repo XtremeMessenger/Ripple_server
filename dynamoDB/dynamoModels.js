@@ -30,25 +30,45 @@ module.exports = {
 
   getPrivateChatHistory: {
     post: function (data, callback) {
-      db.Messages.findAll({
-        where: {
-          [Sequelize.Op.or]: [{
-            from: data.from,
-            to: data.to
-          },
-          {
-            from: data.to,
-            to: data.from
-          }]
-        },
-        limit: 1000
-      }).then(messages => {
-        callback(undefined, messages);
-      }).catch(function (err) {
-        console.log('DB getPrivateChatHistory error ====== ', err);
-        callback(err);
-      })
+
+      dynamodb.get({
+        TableName: "Messages",
+        ProjectionExpression: "from, to",
+        FilterExpression: `from = ${data.from} and to = ${data.to}`
+      }, function (err, data2) {
+        if (err) {
+          callback(err)
+          console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+          callback(undefined, data2)
+          console.log("Added item:", JSON.stringify(data2, null, 2));
+        }
+      });
+      
     }
   }, 
+
+  // getPrivateChatHistory: {
+  //   post: function (data, callback) {
+  //     db.Messages.findAll({
+  //       where: {
+  //         [Sequelize.Op.or]: [{
+  //           from: data.from,
+  //           to: data.to
+  //         },
+  //         {
+  //           from: data.to,
+  //           to: data.from
+  //         }]
+  //       },
+  //       limit: 1000
+  //     }).then(messages => {
+  //       callback(undefined, messages);
+  //     }).catch(function (err) {
+  //       console.log('DB getPrivateChatHistory error ====== ', err);
+  //       callback(err);
+  //     })
+  //   }
+  // }, 
 
 }

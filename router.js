@@ -148,7 +148,7 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
   //console.log('getPrivateChatHistory ====', req.body);
   let totalMessages = [];
 
-  dynamoModels.getPrivateChatHistory.post(req.body, (err, dataObj) => {
+  models.getPrivateChatHistory.post(req.body, (err, dataObj) => {
 
     if (err) {
       console.log('err ========= ', err);
