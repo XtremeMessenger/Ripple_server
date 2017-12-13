@@ -277,9 +277,13 @@ module.exports = {
       var S3 = new AWS.S3();
       var params = {Bucket: 'jayop', Key: data.fileName};
       var file = require('fs').createWriteStream(`./downloads/${data.fileName}`);
+      // S3.getObject(params).createReadStream().pipe(file)
+      file.on('close', ()=>{
+        callback(undefined, 'success')
+      })
       S3.getObject(params).createReadStream().pipe(file);
 
-      callback(undefined, 'success')
+      //callback(undefined, 'success')
     }    
   },
   
