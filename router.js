@@ -90,6 +90,15 @@ router.route('/getFiles').post(function (req, res){
   })
 })
 
+router.route('/getDirectRoomID').post(function (req, res) {
+  models.getDirectRoomID.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    res.send(dataObj);
+  })
+})
+
 router.route('/privateChatStore').post(function (req, res) {
   //console.log('got friend request', req.body);
   dynamoModels.privateChatStore.post(req.body, function (err, dataObj) {
@@ -107,15 +116,16 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
 
   dynamoModels.getPrivateChatHistory.post(req.body, (err, dataObj) => {
 
-    if (err) {
-      console.log('err ========= ', err);
-    }
-    // console.log('dataObj' ,dataObj)
-    for (let i = 0; i < dataObj.length; i++) {
-      totalMessages.push(dataObj[i].dataValues)
-    }
-    // console.log('totalMessages ', totalMessages);
-    res.send({ messages: [totalMessages] });
+    // if (err) {
+    //   console.log('err ========= ', err);
+    // }
+    // // console.log('dataObj' ,dataObj)
+    // for (let i = 0; i < dataObj.length; i++) {
+    //   totalMessages.push(dataObj[i].dataValues)
+    // }
+    // // console.log('totalMessages ', totalMessages);
+    // res.send({ messages: [totalMessages] });
+    res.send(dataObj)
   })
 
 })

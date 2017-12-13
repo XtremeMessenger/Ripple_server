@@ -165,6 +165,22 @@ module.exports = {
     }
   },
 
+  getDirectRoomID: {
+    post: function (data, callback) {
+      db.DirectRoomTable.findOne({
+        where: {
+          username: data.username,
+          friendname: data.friendname,
+        }
+      }).then(findRoomResult => {
+        console.log('get directroomID result', findRoomResult.dataValues)
+        callback(undefined, findRoomResult.dataValues)
+      }).catch(function (err) {
+        callback(err)
+      })
+    }
+  },
+
   addFriend: {
     post: function (data, callback) {
       //console.log(' requested user', data.requested)

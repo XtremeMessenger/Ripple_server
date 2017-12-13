@@ -4,14 +4,16 @@ AWS.config.loadFromPath('./config/AWSKey.json');
 var dynamodb = new AWS.DynamoDB();
 
 dynamodb.createTable({
-  TableName: "Messages",
+  TableName: "DirectMessages",
   KeySchema: [
-    { AttributeName: "from", KeyType: "HASH" },  //Partition key
-    { AttributeName: "to", KeyType: "RANGE" }  //Sort key
+    { AttributeName: "directRoomId", KeyType: "HASH" }
+    // { AttributeName: "directRoomId", KeyType: "RANGE" }  //Partition key
+    // { AttributeName: "from", KeyType: "RANGE" }  //Sort key
   ],
   AttributeDefinitions: [
-    { AttributeName: "from", AttributeType: "S" },
-    { AttributeName: "to", AttributeType: "S" } //S - String, N - Number
+    { AttributeName: "directRoomId", AttributeType: "N" }
+    // { AttributeName: "directRoomId", AttributeType: "N" }
+    // { AttributeName: "to", AttributeType: "S" } //S - String, N - Number
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 10,
