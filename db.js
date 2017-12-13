@@ -77,6 +77,34 @@ const RoomMessages = db.define('messages', {
     text: Sequelize.STRING
 })
 
+const DirectRooms = db.define('directrooms', {
+    roomID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    createdby: Sequelize.STRING,
+    friendname: Sequelize.STRING
+})
+DirectRooms.sync()
+exports.DirectRooms = DirectRooms;
+
+const DirectRoomTable = db.define('directroomtable', {
+    directroomID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    username: Sequelize.STRING,
+    friendname: Sequelize.STRING,
+    room_id: Sequelize.INTEGER
+})
+DirectRoomTable.belongsTo(DirectRooms, {
+    foreignKey: 'room_id', targetKey: 'roomID'
+})
+DirectRoomTable.sync()
+exports.DirectRoomTable = DirectRoomTable;
+
 const Rooms = db.define('rooms', {
     roomID: {
         type: Sequelize.INTEGER,

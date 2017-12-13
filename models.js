@@ -130,45 +130,6 @@ module.exports = {
     }
   },
 
-  getPrivateChatHistory: {
-    post: function (data, callback) {
-      db.Messages.findAll({
-        where: {
-        [Sequelize.Op.or]: [{
-          from: data.from,
-          to: data.to
-        },
-        {
-          from: data.to,
-          to: data.from
-        }]
-        },
-        limit: 1000
-      }).then(messages => {
-        callback(undefined, messages);
-      }).catch(function (err) {
-        console.log('DB getPrivateChatHistory error ====== ', err);
-        callback(err);
-      })
-    }
-  }, 
-
-  privateChatStore: {
-    post: function(data, callback) {
-      db.Messages.create({
-            from: data.from,
-            to: data.to,
-            text: data.text  
-      }).then(()=> {
-        callback(undefined, 'success');
-      }).catch(function (err) {
-        console.log('DB login error ====== ', err);
-        callback(err);
-        })
-    }
-    
-  },
-
   privateSendFile: {
     post: function (data, callback) {
       db.Uploads.create({
@@ -218,6 +179,36 @@ module.exports = {
             ogUsor: data.requestee.username,   // your username
             friend: data.requested   //  the friend you want
           }).then(() => {
+            
+            // check if friend added me already
+            db.DirectRoomTable.findOne({
+              where: {
+                friendname: data.requestee.username,
+                username: data.requested
+              }
+            }).then((result) => {
+              console.log('friend added me results ', result)
+              // if nobody added, create new message table and add table to each other
+              if (result === null) {
+                db.DirectRooms.create({
+                  createdby: data.requestee.username,
+                  friendname: data.requested
+                }).then((createdRoomResult) => {
+                  console.log('created createdRoomResult', createdRoomResult.dataValues)
+                  db.DirectRoomTable.create({
+                    username: data.requestee.username,
+                    friendname: data.requested,
+                    room_id: createdRoomResult.dataValues.roomID
+                  })
+                  db.DirectRoomTable.create({
+                    username: data.requested,
+                    friendname: data.requestee.username,
+                    room_id: createdRoomResult.dataValues.roomID
+                  })
+                })
+              }
+            })
+
             db.Friends.findAll({
               where: {
                 ogUsor: data.requestee.username
@@ -275,10 +266,31 @@ module.exports = {
         callback(undefined, 'success')
       })
       S3.getObject(params).createReadStream().pipe(file);
-      // callback(undefined, 'failed')
-      
-    }
-      
-  }
+
+    }    
+  },
   
+  getPrivateChatHistory: {
+    post: function (data, callback) {
+      db.Messages.findAll({
+        where: {
+          [Sequelize.Op.or]: [{
+            from: data.from,
+            to: data.to
+          },
+          {
+            from: data.to,
+            to: data.from
+          }]
+        },
+        limit: 1000
+      }).then(messages => {
+        callback(undefined, messages);
+      }).catch(function (err) {
+        console.log('DB getPrivateChatHistory error ====== ', err);
+        callback(err);
+      })
+    }
+  }, 
+
 }
