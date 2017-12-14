@@ -47,11 +47,15 @@ app.get('/download/*', (req, res) => {
     res.download(__dirname + fileExtension)
 });
 app.use('/main', router);
-
+app.get('/privacypolicy', (req, res) => {
+    // res.send('wildcard endpoint ====== ');
+    res.sendFile(path.resolve(__dirname, '../Ripple_client/public/privacy.html'));
+})
 
 app.get('*', (req, res) => {
     // res.send('wildcard endpoint ====== ');
-    res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
+    //res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
+    res.redirect('./')
 })
 
 const server = https.createServer(options, app)
