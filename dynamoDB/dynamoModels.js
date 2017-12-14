@@ -145,27 +145,33 @@ module.exports = {
     }
   }, 
 
-  // getPrivateChatHistory: {
-  //   post: function (data, callback) {
-  //     db.Messages.findAll({
-  //       where: {
-  //         [Sequelize.Op.or]: [{
-  //           from: data.from,
-  //           to: data.to
-  //         },
-  //         {
-  //           from: data.to,
-  //           to: data.from
-  //         }]
-  //       },
-  //       limit: 1000
-  //     }).then(messages => {
-  //       callback(undefined, messages);
-  //     }).catch(function (err) {
-  //       console.log('DB getPrivateChatHistory error ====== ', err);
-  //       callback(err);
-  //     })
-  //   }
-  // }, 
+  createDirectChat: {
+    post: function (dataFromClient, callback) {
+
+      var newObj = {};
+      newObj[dataFromClient.timestamp] = {
+        "timestamp": dataFromClient.timestamp,
+        "from": dataFromClient.from,
+        "text": dataFromClient.text
+      }
+
+      let params = {
+        TableName: "DirectMessages",
+        Item: {
+          "directRoomId": dataFromClient.directRoomId,
+          messageObj: newObj
+        }
+      };
+      dynamodb.put(params, function (err, data) {
+        if (err) {
+          console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+          callback(err)
+        } else {
+          console.log("Added item:", JSON.stringify(data, null, 2));
+          callback(undefined, 'first message started')
+        }
+      });
+    }
+  }, 
 
 }

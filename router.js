@@ -113,23 +113,15 @@ router.route('/privateChatStore').post(function (req, res) {
 })
 
 router.route('/getPrivateChatHistory').post(function (req, res) {
-  //console.log('getPrivateChatHistory ====', req.body);
-  let totalMessages = [];
-
   dynamoModels.getPrivateChatHistory.post(req.body, (err, dataObj) => {
-
-    // if (err) {
-    //   console.log('err ========= ', err);
-    // }
-    // // console.log('dataObj' ,dataObj)
-    // for (let i = 0; i < dataObj.length; i++) {
-    //   totalMessages.push(dataObj[i].dataValues)
-    // }
-    // // console.log('totalMessages ', totalMessages);
-    // res.send({ messages: [totalMessages] });
     res.send(dataObj)
   })
+})
 
+router.route('/createDirectChat').post(function (req, res) {
+  dynamoModels.createDirectChat.post(req.body, (err, dataObj) => {
+    res.send(dataObj)
+  })
 })
 
 router.route('/getRooms').post(function (req, res) {
