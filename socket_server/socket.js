@@ -45,10 +45,7 @@ io.on('connection', (socket) => {
 
   socket.on('private', body => {
     console.log('this is private channel ', body)
-    socket.broadcast.emit('private', {
-      text: body[1],
-      from: body[0]
-    })
+    socket.broadcast.emit('private', body)
   })
 
   socket.on('message', function(message) {
