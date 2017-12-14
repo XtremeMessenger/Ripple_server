@@ -6,14 +6,14 @@ var dynamodb = new AWS.DynamoDB();
 dynamodb.createTable({
   TableName: "DirectMessages",
   KeySchema: [
-    { AttributeName: "directRoomId", KeyType: "HASH" }
-    // { AttributeName: "directRoomId", KeyType: "RANGE" }  //Partition key
-    // { AttributeName: "from", KeyType: "RANGE" }  //Sort key
+    { AttributeName: "directRoomId", KeyType: "HASH" } //Partition key
+    // { AttributeName: "timestamp", KeyType: "RANGE" } //Sort key
+    // { AttributeName: "from", KeyType: "RANGE" }  
   ],
   AttributeDefinitions: [
     { AttributeName: "directRoomId", AttributeType: "N" }
-    // { AttributeName: "directRoomId", AttributeType: "N" }
-    // { AttributeName: "to", AttributeType: "S" } //S - String, N - Number
+    // { AttributeName: "timestamp", AttributeType: "N" } //S - String, N - Number
+    // { AttributeName: "to", AttributeType: "S" } 
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 10,
