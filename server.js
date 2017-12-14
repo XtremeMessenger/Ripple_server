@@ -54,8 +54,8 @@ app.get('/privacypolicy', (req, res) => {
 
 app.get('*', (req, res) => {
     // res.send('wildcard endpoint ====== ');
-    //res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
-    res.redirect('./')
+    res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
+    // res.redirect('./')
 })
 
 const server = https.createServer(options, app)
