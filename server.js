@@ -50,7 +50,8 @@ app.use('/main', router);
 
 
 app.get('*', (req, res) => {
-    res.send('wildcard endpoint ====== ');
+    // res.send('wildcard endpoint ====== ');
+    res.sendFile(path.resolve(__dirname, '../Ripple_client/public/index.html'));
 })
 
 const server = https.createServer(options, app)
