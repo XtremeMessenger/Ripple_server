@@ -108,3 +108,4 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT || env.SOCKET_SERVER_PORT;
 server.listen(port, () => console.log(`socket server listening on port ${port}`));
+require('../node_modules/rtcmulticonnection-v3/Signaling-Server.js')(server);
