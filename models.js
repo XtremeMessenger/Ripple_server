@@ -251,10 +251,13 @@ module.exports = {
               })
 
             } else {
-              console.log('already in my friend list')
-              callback(undefined, 'already in my friend list')
+              console.log('user already in friend list')
+              callback(undefined, 'user already in friend list')
             }
           })
+        } else {
+          console.log('user not found')
+          callback(undefined, 'user not found')
         }
         
 
