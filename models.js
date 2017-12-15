@@ -41,7 +41,7 @@ module.exports = {
         userData.dataValues.token = token;
         let userObjToSend = [];
         userObjToSend.push(userData)
-        console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
+        // console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
         callback(undefined, userObjToSend);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
@@ -63,7 +63,7 @@ module.exports = {
         userData.dataValues.token = null;
         let userObjToSend = [];
         userObjToSend.push(userData)
-        console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
+        // console.log('userObjToSend[0].dataValues', userObjToSend[0].dataValues)
         callback(undefined, userObjToSend);
       }).catch(function (err) {
         console.log('DB login error ====== ', err);
@@ -82,10 +82,10 @@ module.exports = {
         //   resident: data.user.username
         // }
       }).then(userRooms => {
-        console.log('uuuuuuuuussooooooooor rooms ', userRooms)
+        // console.log('uuuuuuuuussooooooooor rooms ', userRooms)
         let roomArray = [];
         userRooms.forEach(function (room) {
-          console.log('room.dataValues ===  ', room.dataValues)
+          // console.log('room.dataValues ===  ', room.dataValues)
           roomArray.push(room.dataValues)
         })
         callback(undefined, roomArray)
@@ -115,7 +115,7 @@ module.exports = {
             }).then(function (rooms) {
               var roomsArr = [];
               rooms.forEach(function (room) {
-                console.log('his rooms are ', room.dataValues)
+                // console.log('his rooms are ', room.dataValues)
                 roomsArr.push(room.dataValues)
               })
               callback(undefined, roomsArr);
@@ -173,7 +173,7 @@ module.exports = {
           friendname: data.friendname,
         }
       }).then(findRoomResult => {
-        console.log('get directroomID result', findRoomResult.dataValues)
+        // console.log('get directroomID result', findRoomResult.dataValues)
         callback(undefined, findRoomResult.dataValues)
       }).catch(function (err) {
         callback(err)
@@ -183,63 +183,81 @@ module.exports = {
 
   addFriend: {
     post: function (data, callback) {
-      //console.log(' requested user', data.requested)
-      //console.log(' models data ',data.requestee.username)
+      console.log(' requested user', data.requested)
+      console.log(' models data ',data.requestee.username)
       db.Usors.findOne({
-        where: {
-          username: data.username
-        }
-      })
-      .then(user => {
-          db.Friends.create({
-            ogUsor: data.requestee.username,   // your username
-            friend: data.requested   //  the friend you want
-          }).then(() => {
-            
-            // check if friend added me already
-            db.DirectRoomTable.findOne({
-              where: {
-                friendname: data.requestee.username,
-                username: data.requested
-              }
-            }).then((result) => {
-              console.log('friend added me results ', result)
-              // if nobody added, create new message table and add table to each other
-              if (result === null) {
-                db.DirectRooms.create({
-                  createdby: data.requestee.username,
-                  friendname: data.requested
-                }).then((createdRoomResult) => {
-                  console.log('created createdRoomResult', createdRoomResult.dataValues)
-                  db.DirectRoomTable.create({
-                    username: data.requestee.username,
-                    friendname: data.requested,
-                    room_id: createdRoomResult.dataValues.roomID
-                  })
-                  db.DirectRoomTable.create({
-                    username: data.requested,
-                    friendname: data.requestee.username,
-                    room_id: createdRoomResult.dataValues.roomID
-                  })
-                })
-              }
-            })
+        where: { username: data.requested }
+      }).then(user => {
+        
+        if (user !== null) {
+          console.log('use found in user table', user)
+          db.Friends.findOne({
+            where: {
+              ogUsor: data.requestee.username,
+              friend: data.requested
+            }
+          }).then((findFriendResult) => {
+            // console.log('findFriendResult === ', findFriendResult)
+            if (findFriendResult === null) {
+              // if friend is not in the list, create one
+              db.Friends.create({
+                ogUsor: data.requestee.username,   // your username
+                friend: data.requested   //  the friend you want
+              }).then((friendAddedResult) => {
 
-            db.Friends.findAll({
-              where: {
-                ogUsor: data.requestee.username
-              }
-            }).then(function (friends) {
-              var friendsArr = [];
-              friends.forEach(function (friend) {
-                console.log('his friends are ', friend.dataValues.friend)
-                friendsArr.push(friend.dataValues.friend)
+                // check if friend added me already
+                db.DirectRoomTable.findOne({
+                  where: {
+                    friendname: data.requestee.username,
+                    username: data.requested
+                  }
+                }).then((result) => {
+                  console.log('friend added me results ', result)
+                  // if nobody added, create new message table and add table to each other
+                  if (result === null) {
+                    db.DirectRooms.create({
+                      createdby: data.requestee.username,
+                      friendname: data.requested
+                    }).then((createdRoomResult) => {
+                      console.log('created createdRoomResult', createdRoomResult.dataValues)
+                      db.DirectRoomTable.create({
+                        username: data.requestee.username,
+                        friendname: data.requested,
+                        room_id: createdRoomResult.dataValues.roomID
+                      })
+                      db.DirectRoomTable.create({
+                        username: data.requested,
+                        friendname: data.requestee.username,
+                        room_id: createdRoomResult.dataValues.roomID
+                      })
+                    })
+                  }
+                })
+
+                db.Friends.findAll({
+                  where: {
+                    ogUsor: data.requestee.username
+                  }
+                }).then(function (friends) {
+                  var friendsArr = [];
+                  friends.forEach(function (friend) {
+                    console.log('his friends are ', friend.dataValues.friend)
+                    friendsArr.push(friend.dataValues.friend)
+                  })
+                  callback(undefined, friendsArr);
+                }).catch(function (err) {
+                  callback(err)
+                })
               })
-              callback(undefined, friendsArr);
-            }).catch(function (err) {
-              callback(err)
-            })
+
+            } else {
+              console.log('already in my friend list')
+              callback(undefined, 'already in my friend list')
+            }
           })
+        }
+        
+
         })
         .catch(function (err) {
           callback(err)
