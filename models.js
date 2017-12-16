@@ -51,6 +51,26 @@ var models = {
     }
   },
 
+  update: {
+    post: function (data, callback) {
+      db.Usors.update({
+        first: data.first,
+        last: data.last,
+        quote: data.quote,
+        icon: data.icon
+      },{
+        where: { username: data.username }
+      }).then(user => {
+        console.log('found user.dataValues', user)
+        callback(undefined, 'success');
+      }).catch(function (err) {
+        console.log('DB update error ====== ', err);
+        callback(err);
+
+      })
+    }
+  },
+
   auth: {
     post: function (data, callback) {
       db.Usors.findAll({

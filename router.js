@@ -41,6 +41,15 @@ router.route('/auth').post(function (req, res) {
   })
 })
 
+router.route('/update').post(function (req, res) {
+  models.update.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    res.send(dataObj)
+  })
+})
+
 router.route('/findFriend').post(function (req, res) {
   //console.log('got friend request', req.body);
   models.findFriend.post(req.body, function(err, dataObj){
