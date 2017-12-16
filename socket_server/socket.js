@@ -48,6 +48,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('private', body)
   })
 
+  socket.on('request', body => {
+    console.log('this is request channel ', body)
+    socket.broadcast.emit('request', body)
+  })
+
   socket.on('message', function(message) {
     console.log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)

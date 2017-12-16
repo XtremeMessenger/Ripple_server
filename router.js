@@ -41,9 +41,9 @@ router.route('/auth').post(function (req, res) {
   })
 })
 
-router.route('/addFriend').post(function (req, res) {
+router.route('/findFriend').post(function (req, res) {
   //console.log('got friend request', req.body);
-  models.addFriend.post(req.body, function(err, dataObj){
+  models.findFriend.post(req.body, function(err, dataObj){
   if (err) {
     console.log('err ========= ', err);
   }
@@ -52,13 +52,45 @@ router.route('/addFriend').post(function (req, res) {
  })
 })
 
+router.route('/requestFriend').post(function (req, res) {
+  //console.log('got friend request', req.body);
+  models.requestFriend.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    res.send(dataObj)
+    //console.log('requestfriend models dataObj ', dataObj);
+  })
+})
+
+router.route('/getFriendRequests').post(function (req, res) {
+  //console.log('got friend request', req.body);
+  models.getFriendRequests.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    res.send(dataObj)
+    //console.log('requestfriend models dataObj ', dataObj);
+  })
+})
+
+router.route('/decideFriend').post(function (req, res) {
+  //console.log('got friend request', req.body);
+  models.decideFriend.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    res.send(dataObj)
+    //console.log('requestfriend models dataObj ', dataObj);
+  })
+})
+
 router.route('/privateSendFile').post(function (req, res) {
   //console.log('got friend request', req.body);
  models.privateSendFile.post(req.body, function(err, dataObj){
   if (err) {
     console.log('err ========= ', err);
   }
-  //console.log('addfriend models dataObj ', dataObj);
   res.send(dataObj);
  })
 })
@@ -69,7 +101,6 @@ router.route('/getRoomChatHistory').post(function (req, res) {
   if (err) {
     console.log('err ========= ', err);
   }
-  //console.log('addfriend models dataObj ', dataObj);
   res.send(dataObj);
  })
 })
@@ -107,7 +138,6 @@ router.route('/privateChatStore').post(function (req, res) {
     if (err) {
       console.log('err ========= ', err);
     }
-    //console.log('addfriend models dataObj ', dataObj);
     res.send(dataObj);
   })
 })

@@ -46,8 +46,19 @@ const Friends = db.define('friends', {
     },
     ogUsor: Sequelize.STRING,
     friend: Sequelize.STRING
-   
 })
+
+const FriendRequests = db.define('friendrequests', {
+    requestID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    requestee: Sequelize.STRING,
+    requested: Sequelize.STRING
+})
+FriendRequests.sync()
+exports.FriendRequests = FriendRequests;
 
 const Messages = db.define('messages', {
     messageID: {

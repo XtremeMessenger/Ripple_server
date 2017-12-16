@@ -181,7 +181,7 @@ var models = {
     }
   },
 
-  findFriend: {
+  addFriend: {
     post: function (data, callback) {
       console.log(' requested user', data.requested)
       console.log(' models data ',data.requestee.username)
@@ -200,19 +200,13 @@ var models = {
             // console.log('findFriendResult === ', findFriendResult)
             if (findFriendResult === null) {
               // if friend is not in the list, create one
-              callback(undefined, {
-                requestee: data.requestee.username,
-                requested: data.requested
-              })
-              // models.createFriends.test(data, callback)
-
+              models.createFriends.test(data, callback)
 
 
 
             } else {
               console.log('user already in friend list')
-              callback(undefined, 
-                { error: true, alert: 'user already in friend list'})
+              callback(undefined, 'user already in friend list')
             }
           })
         } else {
@@ -228,91 +222,58 @@ var models = {
     }
   },
 
-  requestFriend: {
-    post: function(data, callback) {
-      console.log('inside requestFriend', data)
-      db.FriendRequests.create({
-        requestee: data.requestee.username,
-        requested: data.requested
-      }).then((requestResult) => {
-        console.log('requestResult', requestResult)
-        callback(undefined, {
-          error: false,
-          alert: `request sent`
-        })
-      })
-    }
-  },
+  createFriends: { 
+    test: function(data, callback) {
+    db.Friends.create({
+      ogUsor: data.requestee.username,   // your username
+      friend: data.requested   //  the friend you want
+    }).then((friendAddedResult) => {
 
-  getFriendRequests: {
-    post: function (data, callback) {
-      console.log('inside requestFriend', data)
-      db.FriendRequests.findAll({
+      // check if friend added me already
+      db.DirectRoomTable.findOne({
         where: {
-          requested: data.username
+          friendname: data.requestee.username,
+          username: data.requested
         }
-      }).then((requestResult) => {
-
-        console.log('requestResult', requestResult)
-        callback(undefined, {
-          error: false,
-          data: requestResult
-        })
-      })
-    }
-  },
-
-  decideFriend: {
-    post: function (data, callback) {
-      console.log('inside decideFriend === ', data)
-      db.FriendRequests.destroy({
-        where: {
-          requestee: data.requestee,
-          requested: data.requested
+      }).then((result) => {
+        console.log('friend added me results ', result)
+        // if nobody added, create new message table and add table to each other
+        if (result === null) {
+          db.DirectRooms.create({
+            createdby: data.requestee.username,
+            friendname: data.requested
+          }).then((createdRoomResult) => {
+            console.log('created createdRoomResult', createdRoomResult.dataValues)
+            db.DirectRoomTable.create({
+              username: data.requestee.username,
+              friendname: data.requested,
+              room_id: createdRoomResult.dataValues.roomID
+            })
+            db.DirectRoomTable.create({
+              username: data.requested,
+              friendname: data.requestee.username,
+              room_id: createdRoomResult.dataValues.roomID
+            })
+          })
         }
       })
-      if (data.decision) {
-        console.log('user decision ', true)
-        models.createFriends.test(data, callback)
-      } else {
-        console.log('user decision ', false)
-      }
-      callback(undefined, 'done')
-    }
-  },
 
-  createFriends: {
-    test: function (data, callback) {
-      db.Friends.create({
-        ogUsor: data.requestee,   // your username
-        friend: data.requested            //  the friend you want
-      })
-      db.Friends.create({
-        ogUsor: data.requested,           // your username
-        friend: data.requestee   //  the friend you want
-      })
-
-      db.DirectRooms.create({
-        createdby: data.requestee,
-        friendname: data.requested
-      }).then((createdRoomResult) => {
-        console.log('created createdRoomResult', createdRoomResult.dataValues)
-        db.DirectRoomTable.create({
-          username: data.requestee,
-          friendname: data.requested,
-          room_id: createdRoomResult.dataValues.roomID
+      db.Friends.findAll({
+        where: {
+          ogUsor: data.requestee.username
+        }
+      }).then(function (friends) {
+        var friendsArr = [];
+        friends.forEach(function (friend) {
+          console.log('his friends are ', friend.dataValues.friend)
+          friendsArr.push(friend.dataValues.friend)
         })
-        db.DirectRoomTable.create({
-          username: data.requested,
-          friendname: data.requestee,
-          room_id: createdRoomResult.dataValues.roomID
-        }) 
-        // callback(undefined, {
-        //   error: false,
-        //   data: data
-        // })
+        callback(undefined, friendsArr);
+      }).catch(function (err) {
+        callback(err)
       })
-    }
+    })
+  }
   },
 
   getFiles: {
