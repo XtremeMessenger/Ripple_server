@@ -122,24 +122,29 @@ const Rooms = db.define('rooms', {
         primaryKey: true,
         autoIncrement: true
     },
+    owner: Sequelize.STRING,
     roomname: Sequelize.STRING,
-    password: Sequelize.STRING,
-    resident: Sequelize.STRING
+    password: Sequelize.STRING
 })
 
-const UserRoomTable = db.define('userroom', {
-    userroomID: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    username: Sequelize.STRING,
-    room_id: Sequelize.INTEGER
-})
+// const UserRoomTable = db.define('userRoomTable', {
+//     userroomID: {
+//         type: Sequelize.INTEGER,
+//         primaryKey: true,
+//         autoIncrement: true
+//     },
+//     username: Sequelize.STRING,
+//     room_id: Sequelize.INTEGER
+// })
 
-UserRoomTable.belongsTo(Rooms, {
-    foreignKey: 'room_id', targetKey: 'roomID'
-})
+// UserRoomTable.belongsTo(Rooms, {
+//     foreignKey: 'room_id', targetKey: 'roomID'
+// })
+
+Rooms.sync()
+exports.Rooms = Rooms;
+// UserRoomTable.sync()
+// exports.UserRoomTable = UserRoomTable;
 
 const Videos = db.define('videos', {
     videoID: {
@@ -167,16 +172,11 @@ const Videos = db.define('videos', {
 
 
 
-// UsorsRooms.belongsTo(Usors, {
-//     foreignKey: 'usor_id', targetKey: 'usorID'
-// })
+
 
 
 Usors.sync()
 exports.Usors = Usors;
-
-// UsorsRooms.sync()
-// exports.UsorsRooms = UsorsRooms;
 
 Uploads.sync()
 exports.Uploads = Uploads;
@@ -193,8 +193,7 @@ exports.RoomMessages = RoomMessages;
 Videos.sync()
 exports.Videos = Videos;
 
-Rooms.sync()
-exports.Rooms = Rooms;
+
 
 
 //user.belongsTo(group, {foreignKey: 'group_id', targetKey: 'groupId'});

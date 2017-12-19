@@ -25,7 +25,7 @@ router.route('/login').post(function (req, res) {
     if (err) {
       console.log('err ========= ', err);
     }
-    console.log('login dataObj to send back to client ========= ', dataObj);
+    // console.log('login dataObj to send back to client ========= ', dataObj);
     res.send(dataObj);
   })
 })
@@ -36,7 +36,7 @@ router.route('/auth').post(function (req, res) {
     if (err) {
       console.log('err ========= ', err);
     }
-    console.log('login auth data.Obj ========= ', dataObj);
+    // console.log('login auth data.Obj ========= ', dataObj);
     res.send(dataObj);
   })
 })
@@ -104,18 +104,8 @@ router.route('/privateSendFile').post(function (req, res) {
  })
 })
 
-router.route('/getRoomChatHistory').post(function (req, res) {
-  //console.log('got friend request', req.body);
- models.getRoomChatHistory.post(req.body, function(err, dataObj){
-  if (err) {
-    console.log('err ========= ', err);
-  }
-  res.send(dataObj);
- })
-})
-
-router.route('/addRoom').post(function (req, res){
-  models.addRoom.post(req.body, function(err, dataObj){
+router.route('/newRoom').post(function (req, res){
+  models.newRoom.post(req.body, function(err, dataObj){
     if(err) {
       console.log('err ========= ', err)
     }
@@ -151,14 +141,36 @@ router.route('/privateChatStore').post(function (req, res) {
   })
 })
 
+router.route('/groupChatStore').post(function (req, res) {
+  //console.log('got friend request', req.body);
+  dynamoModels.groupChatStore.post(req.body, function (err, dataObj) {
+    if (err) {
+      console.log('err ========= ', err);
+    }
+    res.send(dataObj);
+  })
+})
+
 router.route('/getPrivateChatHistory').post(function (req, res) {
   dynamoModels.getPrivateChatHistory.post(req.body, (err, dataObj) => {
     res.send(dataObj)
   })
 })
 
+router.route('/getGroupChatHistory').post(function (req, res) {
+  dynamoModels.getGroupChatHistory.post(req.body, (err, dataObj) => {
+    res.send(dataObj)
+  })
+})
+
 router.route('/createDirectChat').post(function (req, res) {
   dynamoModels.createDirectChat.post(req.body, (err, dataObj) => {
+    res.send(dataObj)
+  })
+})
+
+router.route('/createGroupChat').post(function (req, res) {
+  dynamoModels.createGroupChat.post(req.body, (err, dataObj) => {
     res.send(dataObj)
   })
 })
@@ -185,7 +197,7 @@ router.route('/getFriends').post(function (req, res) {
 })
 
 router.route('/downloadFile').post(function (req, res) {
-  console.log('im here in download file router')
+  // console.log('im here in download file router')
   models.downloadFile.post(req.body, function(err, dataObj){
     if(err) {
       console.log('blat suka')

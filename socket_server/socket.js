@@ -48,6 +48,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('private', body)
   })
 
+  socket.on('group', body => {
+    console.log('this is group channel ', body)
+    socket.broadcast.emit('group', body)
+  })
+
   socket.on('request', body => {
     console.log('this is request channel ', body)
     socket.broadcast.emit('request', body)

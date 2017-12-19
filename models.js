@@ -5,6 +5,7 @@ const Op = Sequelize.Op
 const authentication = require('./middleware/authentication.js')
 var AWS = require('aws-sdk')
 let S3S = require('s3-streams');
+const dynamoModels = require('./dynamoDB/dynamoModels.js')
 
 var models = {
   
@@ -61,7 +62,7 @@ var models = {
       },{
         where: { username: data.username }
       }).then(user => {
-        console.log('found user.dataValues', user)
+        // console.log('found user.dataValues', user)
         callback(undefined, 'success');
       }).catch(function (err) {
         console.log('DB update error ====== ', err);
@@ -95,27 +96,26 @@ var models = {
 
   getRooms: {
     post: function (data, callback) {
-      // console.log('this is getRoom === ',data)
-      // console.log('data dot resident ', data.user.username)
       db.Rooms.findAll({
-        // where: {
-        //   resident: data.user.username
-        // }
-      }).then(userRooms => {
-        // console.log('uuuuuuuuussooooooooor rooms ', userRooms)
+      }).then(allRooms => {
+        // console.log('uuuuuuuuussooooooooor rooms ', allRooms)
         let roomArray = [];
-        userRooms.forEach(function (room) {
+        allRooms.forEach(function (room) {
           // console.log('room.dataValues ===  ', room.dataValues)
           roomArray.push(room.dataValues)
         })
-        callback(undefined, roomArray)
+        let data = {
+          err: false,
+          data: roomArray
+        }
+        callback(undefined, data)
       }).catch(function (err) {
         callback(err)
       })
     }
   },
 
-  addRoom: {
+  newRoom: {
     post: function (data, callback) {
       //console.log('this is addRoom === ', data)
       db.Rooms.findOne({
@@ -124,28 +124,27 @@ var models = {
         }
       })
       .then(room => {
+        // room exists
+        if (room === null) {
+          // room doesn't exist
           db.Rooms.create({
             roomname: data.roomname,
-            resident: data.resident
-          }).then(() => {
-            db.Rooms.findAll({
-              where: {
-                // ogUsor: data.requestee.username
-              }
-            }).then(function (rooms) {
-              var roomsArr = [];
-              rooms.forEach(function (room) {
-                // console.log('his rooms are ', room.dataValues)
-                roomsArr.push(room.dataValues)
-              })
-              callback(undefined, roomsArr);
-            }).catch(function (err) {
-              callback(err)
-            })
+            owner: data.username
+          }).then((newroom) => {
+            console.log('newroom === ', newroom.dataValues.roomID)
+
+            dynamoModels.createGroupChat.post(newroom.dataValues)
+
+            models.getRooms.post(null, callback)
           })
-        })
-        .catch(function (err) {
-          callback(err)
+          } else {
+            // room already exist in DB
+            let data = {
+              err: true,
+              data: 'room already exists'
+            }
+            callback(undefined, data)
+          }      
         })
     }
   },
@@ -203,14 +202,14 @@ var models = {
 
   findFriend: {
     post: function (data, callback) {
-      console.log(' requested user', data.requested)
-      console.log(' models data ',data.requestee.username)
+      // console.log(' requested user', data.requested)
+      // console.log(' models data ',data.requestee.username)
       db.Usors.findOne({
         where: { username: data.requested }
       }).then(user => {
         
         if (user !== null) {
-          console.log('use found in user table', user)
+          // console.log('use found in user table', user)
           db.Friends.findOne({
             where: {
               ogUsor: data.requestee.username,
@@ -250,12 +249,12 @@ var models = {
 
   requestFriend: {
     post: function(data, callback) {
-      console.log('inside requestFriend', data)
+      // console.log('inside requestFriend', data)
       db.FriendRequests.create({
         requestee: data.requestee.username,
         requested: data.requested
       }).then((requestResult) => {
-        console.log('requestResult', requestResult)
+        // console.log('requestResult', requestResult)
         callback(undefined, {
           error: false,
           alert: `request sent`
@@ -266,14 +265,14 @@ var models = {
 
   getFriendRequests: {
     post: function (data, callback) {
-      console.log('inside requestFriend', data)
+      // console.log('inside requestFriend', data)
       db.FriendRequests.findAll({
         where: {
           requested: data.username
         }
       }).then((requestResult) => {
 
-        console.log('requestResult', requestResult)
+        // console.log('requestResult', requestResult)
         callback(undefined, {
           error: false,
           data: requestResult
@@ -284,7 +283,7 @@ var models = {
 
   decideFriend: {
     post: function (data, callback) {
-      console.log('inside decideFriend === ', data)
+      // console.log('inside decideFriend === ', data)
       db.FriendRequests.destroy({
         where: {
           requestee: data.requestee,
@@ -316,7 +315,7 @@ var models = {
         createdby: data.requestee,
         friendname: data.requested
       }).then((createdRoomResult) => {
-        console.log('created createdRoomResult', createdRoomResult.dataValues)
+        // console.log('created createdRoomResult', createdRoomResult.dataValues)
         db.DirectRoomTable.create({
           username: data.requestee,
           friendname: data.requested,
@@ -345,7 +344,7 @@ var models = {
         }
       }).then(function(uploads){
         let filesArray = [];
-        console.log(' this is uploads ' , uploads)
+        // console.log(' this is uploads ' , uploads)
         uploads.forEach(function(upload){
           filesArray.push(upload)
         })
@@ -361,7 +360,7 @@ var models = {
 
   downloadFile: {
     post: function (data, callback) {
-      console.log('this is that data.fileName stuff in download file @ router.js  ',data.fileName)
+      // console.log('this is that data.fileName stuff in download file @ router.js  ',data.fileName)
       var S3 = new AWS.S3();
       var params = {Bucket: 'jayop', Key: data.fileName};
       var file = require('fs').createWriteStream(`./downloads/${data.fileName}`);
@@ -375,28 +374,28 @@ var models = {
     }    
   },
   
-  getPrivateChatHistory: {
-    post: function (data, callback) {
-      db.Messages.findAll({
-        where: {
-          [Sequelize.Op.or]: [{
-            from: data.from,
-            to: data.to
-          },
-          {
-            from: data.to,
-            to: data.from
-          }]
-        },
-        limit: 1000
-      }).then(messages => {
-        callback(undefined, messages);
-      }).catch(function (err) {
-        console.log('DB getPrivateChatHistory error ====== ', err);
-        callback(err);
-      })
-    }
-  }, 
+  // getPrivateChatHistory: {
+  //   post: function (data, callback) {
+  //     db.Messages.findAll({
+  //       where: {
+  //         [Sequelize.Op.or]: [{
+  //           from: data.from,
+  //           to: data.to
+  //         },
+  //         {
+  //           from: data.to,
+  //           to: data.from
+  //         }]
+  //       },
+  //       limit: 1000
+  //     }).then(messages => {
+  //       callback(undefined, messages);
+  //     }).catch(function (err) {
+  //       console.log('DB getPrivateChatHistory error ====== ', err);
+  //       callback(err);
+  //     })
+  //   }
+  // }, 
 
 }
 
