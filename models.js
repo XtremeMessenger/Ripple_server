@@ -225,9 +225,6 @@ var models = {
               })
               // models.createFriends.test(data, callback)
 
-
-
-
             } else {
               console.log('user already in friend list')
               callback(undefined, 
@@ -236,7 +233,8 @@ var models = {
           })
         } else {
           console.log('user not found')
-          callback(undefined, 'user not found')
+          callback(undefined, 
+            { error: true, alert: 'user not found' })
         }
         
 

@@ -58,6 +58,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('request', body)
   })
 
+  socket.on('accept', body => {
+    console.log('this is accept channel ', body)
+    socket.broadcast.emit('accept', body)
+  })
+
   socket.on('message', function(message) {
     console.log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
