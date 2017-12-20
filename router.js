@@ -143,7 +143,7 @@ router.route('/privateChatStore').post(function (req, res) {
 
 router.route('/groupChatStore').post(function (req, res) {
   //console.log('got friend request', req.body);
-  dynamoModels.groupChatStore.post(req.body, function (err, dataObj) {
+  dynamoModels.groupChatArrayStore.post(req.body, function (err, dataObj) {
     if (err) {
       console.log('err ========= ', err);
     }
@@ -158,7 +158,7 @@ router.route('/getPrivateChatHistory').post(function (req, res) {
 })
 
 router.route('/getGroupChatHistory').post(function (req, res) {
-  dynamoModels.getGroupChatHistory.post(req.body, (err, dataObj) => {
+  dynamoModels.getGroupChatArrayHistory.post(req.body, (err, dataObj) => {
     res.send(dataObj)
   })
 })
@@ -170,7 +170,7 @@ router.route('/createDirectChat').post(function (req, res) {
 })
 
 router.route('/createGroupChat').post(function (req, res) {
-  dynamoModels.createGroupChat.post(req.body, (err, dataObj) => {
+  dynamoModels.createGroupChatArray.post(req.body, (err, dataObj) => {
     res.send(dataObj)
   })
 })

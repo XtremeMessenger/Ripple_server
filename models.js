@@ -133,7 +133,7 @@ var models = {
           }).then((newroom) => {
             console.log('newroom === ', newroom.dataValues.roomID)
 
-            dynamoModels.createGroupChat.post(newroom.dataValues)
+            dynamoModels.createGroupChatArray.post(newroom.dataValues)
 
             models.getRooms.post(null, callback)
           })
@@ -371,29 +371,6 @@ var models = {
       //callback(undefined, 'success')
     }    
   },
-  
-  // getPrivateChatHistory: {
-  //   post: function (data, callback) {
-  //     db.Messages.findAll({
-  //       where: {
-  //         [Sequelize.Op.or]: [{
-  //           from: data.from,
-  //           to: data.to
-  //         },
-  //         {
-  //           from: data.to,
-  //           to: data.from
-  //         }]
-  //       },
-  //       limit: 1000
-  //     }).then(messages => {
-  //       callback(undefined, messages);
-  //     }).catch(function (err) {
-  //       console.log('DB getPrivateChatHistory error ====== ', err);
-  //       callback(err);
-  //     })
-  //   }
-  // }, 
 
 }
 
