@@ -3,10 +3,27 @@ const dynamoDB = require('./dynamoDB');
 const AWS = require("aws-sdk");
 AWS.config.loadFromPath('./config/AWSKey.json');
 
-var dynamodb = new AWS.DynamoDB.DocumentClient();
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+const groupChatArrayLimit = 100;
 
+var chunkArray = (array, limit) => {
+  if (array.length > limit) {
+    let newArray = array.slice()
+    newArray.shift()
+    return chunkArray(newArray, limit)
+  } else {
+    return array;
+  }
+}
 
-module.exports = {
+const dynamoModels = {  
+
+  groupChatNightWorker: {
+    chunk: function () {
+      console.log('im working')
+
+    }
+  },
 
   privateChatStore: {
     post: function (dataFromClient, callback) {
@@ -219,18 +236,20 @@ module.exports = {
             "text": dataFromClient.text
           }
 
-          console.log('this is newObj === ', newObj)
-          console.log('dataFromDB.Items[0]', dataFromDB.Items[0])
-          console.log('dataFromDB.Items[0].messageArray', dataFromDB.Items[0].messageArray)
+          // console.log('this is newObj === ', newObj)
+          // console.log('dataFromDB.Items[0]', dataFromDB.Items[0])
+          // console.log('dataFromDB.Items[0].messageArray', dataFromDB.Items[0].messageArray)
           let arrayFromDB = dataFromDB.Items[0].messageArray;
           arrayFromDB.push(newObj)
-          console.log('dataFromDB.Items[0] after', arrayFromDB)
+          // console.log('dataFromDB.Items[0] before chunk', arrayFromDB)
+          let arraySizeAdjusted = chunkArray(arrayFromDB, groupChatArrayLimit)
+          // console.log('dataFromDB.Items[0] after chunk', arraySizeAdjusted)
 
           dynamodb.put({
             TableName: "GroupMessageArray",
             Item: {
               "roomID": dataFromClient.roomID,
-              messageArray: arrayFromDB
+              messageArray: arraySizeAdjusted
             }
           }, function (err, dataAfterPut) {
             if (err) {
@@ -271,3 +290,6 @@ module.exports = {
     }
   }, 
 }
+
+// setInterval(dynamoModels.groupChatNightWorker.chunk, 10000);
+module.exports = dynamoModels;
