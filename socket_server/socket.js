@@ -68,6 +68,16 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newroom', body)
   })
 
+  socket.on('videoRequest', body => {
+    console.log('this is videoRequest channel ', body)
+    socket.broadcast.emit('videoRequest', body)
+  })
+
+  socket.on('videoReqResult', body => {
+    console.log('this is videoReqResult channel ', body)
+    socket.broadcast.emit('videoReqResult', body)
+  })
+
   socket.on('message', function(message) {
     console.log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
