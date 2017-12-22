@@ -83,6 +83,16 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('startVideoConference', body)
   })
 
+  socket.on('closeVideo', body => {
+    console.log('this is closeVideo channel ', body)
+    socket.broadcast.emit('closeVideo', body)
+  })
+
+  socket.on('closeVideoAll', body => {
+    console.log('this is closeVideoAll channel ', body)
+    socket.broadcast.emit('closeVideoAll', body)
+  })
+
   socket.on('message', function(message) {
     console.log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
