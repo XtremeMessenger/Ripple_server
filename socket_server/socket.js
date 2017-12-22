@@ -93,6 +93,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('closeVideoAll', body)
   })
 
+  socket.on('fileUploaded', body => {
+    console.log('this is fileUploaded channel ', body)
+    socket.broadcast.emit('fileUploaded', body)
+  })
+
   socket.on('message', function(message) {
     console.log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
