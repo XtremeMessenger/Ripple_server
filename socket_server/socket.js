@@ -48,9 +48,19 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('private', body)
   })
 
+  socket.on('privateVideo', body => {
+    console.log('this is privateVideo channel ', body)
+    socket.broadcast.emit('privateVideo', body)
+  })
+
   socket.on('group', body => {
     console.log('this is group channel ', body)
     socket.broadcast.emit('group', body)
+  })
+
+  socket.on('groupVideo', body => {
+    console.log('this is groupVideo channel ', body)
+    socket.broadcast.emit('groupVideo', body)
   })
 
   socket.on('request', body => {
